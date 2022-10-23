@@ -41,9 +41,9 @@ export default function LoginScreen() {
         <div className="loginBox">
             <p className="title">판매하마와</p>
             <p className="title">대화해볼까요?</p>
-            <div>
+            <div className="inputBoxParent">
                 <input
-                    className="id"
+                    className="inputBox"
                     type="text"
                     name="id"
                     placeholder="아이디를 입력하세요"
@@ -54,7 +54,7 @@ export default function LoginScreen() {
 
             <div>
                 <input
-                    className="pw"
+                    className="inputBox"
                     type="password"
                     name="pw"
                     placeholder="비밀번호를 입력하세요"
@@ -65,7 +65,7 @@ export default function LoginScreen() {
 
             <div>
                 <input
-                    className="store"
+                    className="inputBox"
                     type="text"
                     name="store"
                     placeholder="지점명을 입력하세요"
