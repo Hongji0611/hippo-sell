@@ -3,6 +3,7 @@ import moment from 'moment';
 import "./Chatting.css";
 import { manual } from "../../data/Manual";
 import useUser from "../../context/hook/useUser";
+import { product } from "../../data/Product";
 
 export default function ChattingScreen() {
     const { user } = useUser();
@@ -13,7 +14,7 @@ export default function ChattingScreen() {
     const [chatList, setChatList] = useState([
         {
             no: 1,
-            chat: "반갑습니다. "+user.name+"님",
+            chat: "반갑습니다. " + user.name + "님",
             date: nowTime,
             isBot: true,
         },
@@ -38,6 +39,21 @@ export default function ChattingScreen() {
         }
     }
 
+    function checkKorean(str) {
+        const regx = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        return regx.test(str);
+    }
+
+    const setError = () => {
+        setChatList(prev => [...prev,
+        {
+            no: chatList.length + 1,
+            chat: manual['오류'],
+            date: nowTime,
+            isBot: true
+        }]);
+    }
+
     const handleAddChat = () => {
         if (chatText.length !== 0) {
             setChatList(prev => [...prev,
@@ -50,6 +66,25 @@ export default function ChattingScreen() {
 
             if (manual[chatText] === undefined) {
                 //모델명인지 확인
+                if (!checkKorean(chatText)) {
+                    const isFound = false;
+                    product.map((item) => {
+                        if (item.code === chatText) {
+                            setChatList(prev => [...prev,
+                            {
+                                no: chatList.length + 1,
+                                chat: "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)",
+                                date: nowTime,
+                                isBot: true
+                            }])
+                            isFound = true;
+                        }
+                    })
+                    if(!isFound)
+                        setError();
+                } else {
+                    setError();
+                }
 
             } else {
                 setChatList(prev => [...prev,
