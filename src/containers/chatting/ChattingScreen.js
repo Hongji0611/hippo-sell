@@ -4,6 +4,7 @@ import "./Chatting.css";
 import { manual } from "../../data/Manual";
 import useUser from "../../context/hook/useUser";
 import { product } from "../../data/Product";
+import { sales } from "../../data/SalesHistory";
 
 export default function ChattingScreen() {
     const { user } = useUser();
@@ -44,11 +45,11 @@ export default function ChattingScreen() {
         return regx.test(str);
     }
 
-    const setError = () => {
+    const setBotMessage = (str) => {
         setChatList(prev => [...prev,
         {
             no: chatList.length + 1,
-            chat: manual['오류'],
+            chat: manual[str],
             date: nowTime,
             isBot: true
         }]);
@@ -65,8 +66,60 @@ export default function ChattingScreen() {
             }])
 
             if (manual[chatText] === undefined) {
-                //모델명인지 확인
-                if (!checkKorean(chatText)) {
+                if (chatText === "판매내역 전체") {
+                    if (sales.length !== 0) {
+                        sales.map((item) => {
+                            setChatList(prev => [...prev,
+                            {
+                                no: chatList.length + 1,
+                                chat: "고객명: " + item.customerName
+                                    + "\n상품코드: " + item.code
+                                    + "\n수량: " + item.count
+                                    + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    + "\n판매 일자: " + item.dateOfSale
+                                    + "\n배달 일자: " + item.dateOfDelivery
+                                    + "\n취소 일자: " + item.dateOfCancellation,
+                                date: nowTime,
+                                isBot: true
+                            }])
+                        })
+                    } else {
+                        setBotMessage("판매내역없음");
+                    }
+                } else if (chatText.includes("판매내역")) {
+                    const words = chatText.split(' ');
+
+                    if( words[1] === undefined){
+                        setBotMessage('오류');
+                        return false;
+                    }
+
+                    var isEmpty = true;
+
+                    sales.map((item) => {
+                        if (item.customerName === words[1]) {
+                            setChatList(prev => [...prev,
+                            {
+                                no: chatList.length + 1,
+                                chat: "고객명: " + item.customerName
+                                    + "\n상품코드: " + item.code
+                                    + "\n수량: " + item.count
+                                    + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                    + "\n판매 일자: " + item.dateOfSale
+                                    + "\n배달 일자: " + item.dateOfDelivery
+                                    + "\n취소 일자: " + item.dateOfCancellation,
+                                date: nowTime,
+                                isBot: true
+                            }])
+                            isEmpty = false
+                        }
+                    })
+
+                    if(isEmpty){
+                        setBotMessage("판매내역없음")
+                    }
+
+                } else if (!checkKorean(chatText)) { //모델명
                     const isFound = false;
                     product.map((item) => {
                         if (item.code === chatText) {
@@ -80,10 +133,10 @@ export default function ChattingScreen() {
                             isFound = true;
                         }
                     })
-                    if(!isFound)
-                        setError();
+                    if (!isFound)
+                        setBotMessage("오류");
                 } else {
-                    setError();
+                    setBotMessage("오류");
                 }
 
             } else {
