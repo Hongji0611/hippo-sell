@@ -5,6 +5,7 @@ import { manual } from "../../data/Manual";
 import useUser from "../../context/hook/useUser";
 import { product } from "../../data/Product";
 import { sales } from "../../data/SalesHistory";
+import { todayDelivery, tomorrowDelivery } from "../../data/DeliveryHistory";
 
 export default function ChattingScreen() {
     const { user } = useUser();
@@ -66,7 +67,45 @@ export default function ChattingScreen() {
             }])
 
             if (manual[chatText] === undefined) {
-                if (chatText === "판매내역 전체") {
+                if(chatText === "익일 배송"){
+                    if (tomorrowDelivery.length !== 0){
+                        tomorrowDelivery.map((item) => {
+                            setChatList(prev => [...prev,
+                                {
+                                    no: chatList.length + 1,
+                                    chat: "고객명: " + item.customerName
+                                        + "\n휴대폰번호: " + item.phone
+                                        + "\n상품명: " + item.productName
+                                        + "\n상품 코드: " + item.code
+                                        + "\n배송 유형: " + item.type
+                                        + "\n배송 상태: " + item.state,
+                                    date: nowTime,
+                                    isBot: true
+                                }])
+                        })
+                    }else{
+                        setBotMessage("익일배송없음");
+                    }
+                }else if(chatText === "당일 배송"){
+                    if (todayDelivery.length !== 0){
+                        todayDelivery.map((item) => {
+                            setChatList(prev => [...prev,
+                                {
+                                    no: chatList.length + 1,
+                                    chat: "고객명: " + item.customerName
+                                        + "\n휴대폰번호: " + item.phone
+                                        + "\n상품명: " + item.productName
+                                        + "\n상품 코드: " + item.code
+                                        + "\n배송 유형: " + item.type
+                                        + "\n배송 상태: " + item.state,
+                                    date: nowTime,
+                                    isBot: true
+                                }])
+                        })
+                    }else{
+                        setBotMessage("당일배송없음");
+                    }
+                }else if (chatText === "판매내역 전체") {
                     if (sales.length !== 0) {
                         sales.map((item) => {
                             setChatList(prev => [...prev,
