@@ -24,7 +24,7 @@ export default function LoginScreen() {
         {
             id: "4220011",
             pw: "q123123123",
-            store: "주안"
+            store: "주안점"
         }
     ]
 
@@ -73,6 +73,12 @@ export default function LoginScreen() {
                     value={store}
                 />
             </div>
+
+            <div>
+                <p className="changePw">비밀번호 변경</p>
+                <p className="initPw">비밀번호 초기화</p>
+            </div>
+
 
             <React.Fragment>
                 <button className="loginBtn" onClick={navigateToChat}>로그인</button>

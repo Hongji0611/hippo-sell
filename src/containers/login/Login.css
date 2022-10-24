@@ -2,7 +2,6 @@
 
 .loginBox{
     padding: 30px;
-
     margin-top: 100px;
 }
 
@@ -14,7 +13,7 @@
 }
 
 .inputBox{
-    width: 90%;
+    width: 92%;
     border-color: #aeaeae;
     border-radius: 10px;
     margin-top: 10px;
@@ -39,4 +38,16 @@
 
 .inputBoxParent{
     margin-top: 80px;
+}
+
+.changePw{
+    float: left;
+    font-size: 14px;
+    margin-top: 14px;
+}
+
+.initPw{
+    float: right;
+    font-size: 14px;
+    margin-top: 14px;
 }
