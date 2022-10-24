@@ -84,7 +84,7 @@ export default function ChattingScreen() {
                                 }])
                         })
                     }else{
-                        setBotMessage("약속내역없음");
+                        setBotMessage("익일배송없음");
                     }
                 }else if(chatText === "익일 배송"){
                     if (tomorrowDelivery.length !== 0){
@@ -184,7 +184,7 @@ export default function ChattingScreen() {
                             setChatList(prev => [...prev,
                             {
                                 no: chatList.length + 1,
-                                chat: "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)",
+                                chat: "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n재고: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)",
                                 date: nowTime,
                                 isBot: true
                             }])
