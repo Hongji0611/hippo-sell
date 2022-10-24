@@ -20,7 +20,7 @@ export default function ChattingScreen() {
         },
         {
             no: 2,
-            chat: manual['메뉴'],
+            chat: manual['도움말'],
             date: nowTime,
             isBot: true,
         }
