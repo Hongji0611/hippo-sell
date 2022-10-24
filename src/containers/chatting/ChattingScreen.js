@@ -1,15 +1,26 @@
 import { useEffect, useState, useRef } from "react";
 import moment from 'moment';
-
 import "./Chatting.css";
+import { manual } from "../../data/Manual";
+import useUser from "../../context/hook/useUser";
 
 export default function ChattingScreen() {
+    const { user } = useUser();
+
+    const nowTime = moment().format('HH:mm');
+
     const [chatText, setChatText] = useState("");
     const [chatList, setChatList] = useState([
         {
             no: 1,
-            chat: "원하는 메뉴를 입력해주세요.\n\n1. 상품정보 조회 안내\n2. 판매내역 조회 안내\n3. 고객약속내역 조회 안내\n4. 배송예정건 조회 안내\n\n예시) 상품정보 조회 안내\n\n초기화하고 싶으실 경우 '메뉴'를 입력해주세요.",
-            date: '10:09',
+            chat: "반갑습니다. "+user.name+"님",
+            date: nowTime,
+            isBot: true,
+        },
+        {
+            no: 2,
+            chat: manual['메뉴'],
+            date: nowTime,
             isBot: true,
         }
     ]);
@@ -20,17 +31,15 @@ export default function ChattingScreen() {
 
     const chatInput = useRef();
 
-    const nowTime = moment().format('HH:mm');
-
     const onKeyPress = (e) => {
-        if (e.key == 'Enter') {
+        if (e.key === 'Enter') {
             handleAddChat();
             setChatText("");
         }
     }
 
     const handleAddChat = () => {
-        if (chatText.length != 0) {
+        if (chatText.length !== 0) {
             setChatList(prev => [...prev,
             {
                 no: chatList.length + 1,
@@ -38,6 +47,19 @@ export default function ChattingScreen() {
                 date: nowTime,
                 isBot: false
             }])
+
+            if (manual[chatText] === undefined) {
+                //모델명인지 확인
+
+            } else {
+                setChatList(prev => [...prev,
+                {
+                    no: chatList.length + 1,
+                    chat: manual[chatText],
+                    date: nowTime,
+                    isBot: true
+                }])
+            }
         }
     }
 
@@ -63,7 +85,7 @@ export default function ChattingScreen() {
                                             <span>{item.chat}</span>
                                         </div>
                                         <span className="botDate">{item.date}</span>
-                                    </div> 
+                                    </div>
                                     :
                                     <div className="userChatBox">
                                         <div className="userChat">

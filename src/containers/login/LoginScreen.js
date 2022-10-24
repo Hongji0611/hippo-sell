@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import Modal from '../../components/modal/Modal';
+import { userData } from "../../data/User";
+import useUser from "../../context/hook/useUser";
 
 export default function LoginScreen() {
+    const { setUser } = useUser();
 
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
@@ -20,21 +23,19 @@ export default function LoginScreen() {
 
     const navigate = useNavigate();
 
-    const userData = [
-        {
-            id: "4220011",
-            pw: "q123123123",
-            store: "주안점"
-        }
-    ]
-
     const navigateToChat = () => {
-        if (userData[0].id === id && userData[0].pw === pw && userData[0].store === store) {
-            navigate("/chat");
-        } else {
-            openModal();
-        }
-
+        userData.map((item) => {
+            if (item.id === id && item.pw === pw && item.store === store) {
+                setUser({
+                    id: item.id,
+                    pw: item.pw,
+                    store: item.store,
+                    name: item.name
+                })
+                navigate("/chat");
+            }
+        })
+        openModal();
     };
 
     return (
@@ -83,7 +84,7 @@ export default function LoginScreen() {
             <React.Fragment>
                 <button className="loginBtn" onClick={navigateToChat}>로그인</button>
                 <Modal open={modalOpen} close={closeModal} header="로그인정보 오류">
-                    올바르지 않는 정보입니다. 다시 입력해주세요.
+                    로그인 정보가 맞지 않습니다. 다시 입력해주세요.
                 </Modal>
             </React.Fragment>
         </div>
