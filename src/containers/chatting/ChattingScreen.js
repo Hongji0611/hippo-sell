@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useInsertionEffect } from "react";
 import moment from 'moment';
 import "./Chatting.css";
 import { manual } from "../../data/Manual";
@@ -29,11 +29,15 @@ export default function ChattingScreen() {
         }
     ]);
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [chatList]);
+    const messagesEndRef = useRef(null)
 
-    const chatInput = useRef();
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [chatList]);
 
     const onKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -68,63 +72,63 @@ export default function ChattingScreen() {
             }])
 
             if (manual[chatText] === undefined) {
-                if(chatText === "고객 약속"){
-                    if (promise.length !== 0){
+                if (chatText === "고객 약속") {
+                    if (promise.length !== 0) {
                         promise.map((item) => {
                             setChatList(prev => [...prev,
-                                {
-                                    no: chatList.length + 1,
-                                    chat: "고객명: " + item.customerName
-                                        + "\n휴대폰번호: " + item.phone
-                                        + "\n약속예정일자: " + item.date
-                                        + "\n상담 유형: " + item.type
-                                        + "\n약속 내용: " + item.contents,
-                                    date: nowTime,
-                                    isBot: true
-                                }])
+                            {
+                                no: chatList.length + 1,
+                                chat: "고객명: " + item.customerName
+                                    + "\n휴대폰번호: " + item.phone
+                                    + "\n약속예정일자: " + item.date
+                                    + "\n상담 유형: " + item.type
+                                    + "\n약속 내용: " + item.contents,
+                                date: nowTime,
+                                isBot: true
+                            }])
                         })
-                    }else{
+                    } else {
                         setBotMessage("익일배송없음");
                     }
-                }else if(chatText === "익일 배송"){
-                    if (tomorrowDelivery.length !== 0){
+                } else if (chatText === "익일 배송") {
+                    if (tomorrowDelivery.length !== 0) {
                         tomorrowDelivery.map((item) => {
                             setChatList(prev => [...prev,
-                                {
-                                    no: chatList.length + 1,
-                                    chat: "고객명: " + item.customerName
-                                        + "\n휴대폰번호: " + item.phone
-                                        + "\n상품명: " + item.productName
-                                        + "\n상품 코드: " + item.code
-                                        + "\n배송 유형: " + item.type
-                                        + "\n배송 상태: " + item.state,
-                                    date: nowTime,
-                                    isBot: true
-                                }])
+                            {
+                                no: chatList.length + 1,
+                                chat: "고객명: " + item.customerName
+                                    + "\n휴대폰번호: " + item.phone
+                                    + "\n상품명: " + item.productName
+                                    + "\n상품 코드: " + item.code
+                                    + "\n배송 유형: " + item.type
+                                    + "\n배송 상태: " + item.state,
+                                date: nowTime,
+                                isBot: true
+                            }])
                         })
-                    }else{
+                    } else {
                         setBotMessage("익일배송없음");
                     }
-                }else if(chatText === "당일 배송"){
-                    if (todayDelivery.length !== 0){
+                } else if (chatText === "당일 배송") {
+                    if (todayDelivery.length !== 0) {
                         todayDelivery.map((item) => {
                             setChatList(prev => [...prev,
-                                {
-                                    no: chatList.length + 1,
-                                    chat: "고객명: " + item.customerName
-                                        + "\n휴대폰번호: " + item.phone
-                                        + "\n상품명: " + item.productName
-                                        + "\n상품 코드: " + item.code
-                                        + "\n배송 유형: " + item.type
-                                        + "\n배송 상태: " + item.state,
-                                    date: nowTime,
-                                    isBot: true
-                                }])
+                            {
+                                no: chatList.length + 1,
+                                chat: "고객명: " + item.customerName
+                                    + "\n휴대폰번호: " + item.phone
+                                    + "\n상품명: " + item.productName
+                                    + "\n상품 코드: " + item.code
+                                    + "\n배송 유형: " + item.type
+                                    + "\n배송 상태: " + item.state,
+                                date: nowTime,
+                                isBot: true
+                            }])
                         })
-                    }else{
+                    } else {
                         setBotMessage("당일배송없음");
                     }
-                }else if (chatText === "판매내역 전체") {
+                } else if (chatText === "판매내역 전체") {
                     if (sales.length !== 0) {
                         sales.map((item) => {
                             setChatList(prev => [...prev,
@@ -147,7 +151,7 @@ export default function ChattingScreen() {
                 } else if (chatText.includes("판매내역")) {
                     const words = chatText.split(' ');
 
-                    if( words[1] === undefined){
+                    if (words[1] === undefined) {
                         setBotMessage('오류');
                         return false;
                     }
@@ -173,7 +177,7 @@ export default function ChattingScreen() {
                         }
                     })
 
-                    if(isEmpty){
+                    if (isEmpty) {
                         setBotMessage("판매내역없음")
                     }
 
@@ -209,17 +213,12 @@ export default function ChattingScreen() {
         }
     }
 
-    const scrollToBottom = () => {
-        const { scrollHeight, clientHeight } = chatInput.current;
-        chatInput.current.scrollTop = scrollHeight - clientHeight;
-    }
-
     return (
         <div className="chatBox">
             <div className="header">
                 <p className="headerTitle">판매하마</p>
             </div>
-            <div className="body" ref={chatInput}>
+            <div className="body">
                 {
                     chatList.map((item) => {
                         const isBot = item.isBot;
@@ -244,6 +243,7 @@ export default function ChattingScreen() {
                         )
                     })
                 }
+                <div ref={messagesEndRef}/>
             </div>
             <div className="footer">
                 <input
