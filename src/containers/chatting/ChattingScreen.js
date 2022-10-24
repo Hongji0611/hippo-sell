@@ -6,6 +6,7 @@ import useUser from "../../context/hook/useUser";
 import { product } from "../../data/Product";
 import { sales } from "../../data/SalesHistory";
 import { todayDelivery, tomorrowDelivery } from "../../data/DeliveryHistory";
+import { promise } from "../../data/CustomerPromise";
 
 export default function ChattingScreen() {
     const { user } = useUser();
@@ -67,7 +68,25 @@ export default function ChattingScreen() {
             }])
 
             if (manual[chatText] === undefined) {
-                if(chatText === "익일 배송"){
+                if(chatText === "고객 약속"){
+                    if (promise.length !== 0){
+                        promise.map((item) => {
+                            setChatList(prev => [...prev,
+                                {
+                                    no: chatList.length + 1,
+                                    chat: "고객명: " + item.customerName
+                                        + "\n휴대폰번호: " + item.phone
+                                        + "\n약속예정일자: " + item.date
+                                        + "\n상담 유형: " + item.type
+                                        + "\n약속 내용: " + item.contents,
+                                    date: nowTime,
+                                    isBot: true
+                                }])
+                        })
+                    }else{
+                        setBotMessage("약속내역없음");
+                    }
+                }else if(chatText === "익일 배송"){
                     if (tomorrowDelivery.length !== 0){
                         tomorrowDelivery.map((item) => {
                             setChatList(prev => [...prev,
