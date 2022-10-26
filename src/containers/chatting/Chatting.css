@@ -114,3 +114,29 @@
     white-space: pre-wrap;
     word-break: break-all;
 }
+
+.botChatList{
+    background-color: white;
+    color: black;
+    width: fit-content;
+    max-width: 80%;
+
+    float: left;
+
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-left: 14px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.menuBtn{
+    display: block;
+    width: 100%;
+    padding: 6px 20px;
+    margin-top: 10px;
+    border: 0;
+    border-radius: 6px;
+}

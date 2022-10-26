@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useInsertionEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import moment from 'moment';
 import "./Chatting.css";
 import { manual } from "../../data/Manual";
@@ -7,6 +7,8 @@ import { product } from "../../data/Product";
 import { sales } from "../../data/SalesHistory";
 import { todayDelivery, tomorrowDelivery } from "../../data/DeliveryHistory";
 import { promise } from "../../data/CustomerPromise";
+import { menu } from "../../data/Menu";
+import Scroll from "../../components/scroll/Scroll";
 
 export default function ChattingScreen() {
     const { user } = useUser();
@@ -20,12 +22,16 @@ export default function ChattingScreen() {
             chat: "반갑습니다. " + user.name + "님",
             date: nowTime,
             isBot: true,
+            isBtn: false,
+            list: []
         },
         {
             no: 2,
-            chat: manual['도움말'],
+            chat: manual['기능'],
             date: nowTime,
             isBot: true,
+            isBtn: true,
+            list: []
         }
     ]);
 
@@ -51,164 +57,156 @@ export default function ChattingScreen() {
         return regx.test(str);
     }
 
-    const setBotMessage = (str) => {
+    const setMessage = (_chat, _isBot, _isBtn, _list) => {
         setChatList(prev => [...prev,
         {
             no: chatList.length + 1,
-            chat: manual[str],
+            chat: _chat,
             date: nowTime,
-            isBot: true
+            isBot: _isBot,
+            isBtn: _isBtn,
+            list: _list
         }]);
+    }
+
+    const setOnClickMenu = (index) => {
+        setMessage(menu[index], false, false, []);
+
+        switch (index) {
+            case 0:
+                setMessage(manual['상품정보조회'], true, false, []);
+                break;
+            case 1: //판매내역조회
+                searchSalesHistory();
+                break;
+
+            case 2: //고객약속내역조회
+                searchCustomerPromise();
+                break;
+
+            case 3: //당일배송내역조회
+                searchTodayDeliveryHistory();
+                break;
+
+            case 4: //익일배송내역조회
+                searchTomorrowDeliveryHistory();
+                break;
+            default:
+                break;
+        }
+    }
+
+    const searchSalesHistory = () => {
+        if (sales.length !== 0) {
+            setMessage(manual['판매내역조회'], true, false, []);
+            var list = []
+
+            sales.map((item) => {
+                const str = "고객명: " + item.customerName
+                    + "\n상품코드: " + item.code
+                    + "\n수량: " + item.count
+                    + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    + "\n판매 일자: " + item.dateOfSale
+                    + "\n배달 일자: " + item.dateOfDelivery
+                    + "\n취소 일자: " + item.dateOfCancellation;
+                list.push(str);
+            })
+            setMessage("", true, false, list);
+
+        } else {
+            setMessage(manual['판매내역없음'], true, false, []);
+        }
+        setMessage(manual["기능"], true, true, []);
+    }
+
+    const searchCustomerPromise = () => {
+        if (promise.length !== 0) {
+            setMessage(manual['고객약속내역조회'], true, false, []);
+            var list = [];
+            promise.map((item) => {
+                const str = "고객명: " + item.customerName
+                    + "\n휴대폰번호: " + item.phone
+                    + "\n약속예정일자: " + item.date
+                    + "\n상담 유형: " + item.type
+                    + "\n약속 내용: " + item.contents;
+                list.push(str);
+            })
+            setMessage("", true, false, list);
+        } else {
+            setMessage(manual['약속내역없음'], true, false, []);
+        }
+        setMessage(manual["기능"], true, true, []);
+    }
+
+    const searchTodayDeliveryHistory = () => {
+        if (todayDelivery.length !== 0) {
+            setMessage(manual['당일배송내역조회'], true, false, []);
+            var list = [];
+            todayDelivery.map((item) => {
+                const str = "고객명: " + item.customerName
+                    + "\n휴대폰번호: " + item.phone
+                    + "\n상품명: " + item.productName
+                    + "\n상품 코드: " + item.code
+                    + "\n배송 유형: " + item.type
+                    + "\n배송 상태: " + item.state;
+                list.push(str);
+            })
+            setMessage("", true, false, list);
+        } else {
+            setMessage(manual['당일배송없음'], true, false, []);
+        }
+        setMessage(manual["기능"], true, true, []);
+    }
+
+    const searchTomorrowDeliveryHistory = () => {
+        if (tomorrowDelivery.length !== 0) {
+            setMessage(manual['익일배송내역조회'], true, false, []);
+            var list = [];
+            tomorrowDelivery.map((item) => {
+                const str = "고객명: " + item.customerName
+                    + "\n휴대폰번호: " + item.phone
+                    + "\n상품명: " + item.productName
+                    + "\n상품 코드: " + item.code
+                    + "\n배송 유형: " + item.type
+                    + "\n배송 상태: " + item.state;
+                list.push(str);
+            })
+            setMessage("", true, false, list);
+        } else {
+            setMessage(manual['익일배송없음'], true, false, []);
+        }
+        setMessage(manual["기능"], true, true, []);
     }
 
     const handleAddChat = () => {
         if (chatText.length !== 0) {
-            setChatList(prev => [...prev,
-            {
-                no: chatList.length + 1,
-                chat: chatText,
-                date: nowTime,
-                isBot: false
-            }])
-
-            if (manual[chatText] === undefined) {
-                if (chatText === "고객 약속") {
-                    if (promise.length !== 0) {
-                        promise.map((item) => {
-                            setChatList(prev => [...prev,
-                            {
-                                no: chatList.length + 1,
-                                chat: "고객명: " + item.customerName
-                                    + "\n휴대폰번호: " + item.phone
-                                    + "\n약속예정일자: " + item.date
-                                    + "\n상담 유형: " + item.type
-                                    + "\n약속 내용: " + item.contents,
-                                date: nowTime,
-                                isBot: true
-                            }])
-                        })
-                    } else {
-                        setBotMessage("익일배송없음");
+            setMessage(chatText, false, false, []);
+            if (!checkKorean(chatText)) { //상품정보조회
+                const isFound = false;
+                product.map((item) => {
+                    if (item.code === chatText) {
+                        const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
+                        setMessage(str, true, false, []);
+                        setMessage(manual["기능"], true, true, []);
+                        setChatText("");
+                        isFound = true;
                     }
-                } else if (chatText === "익일 배송") {
-                    if (tomorrowDelivery.length !== 0) {
-                        tomorrowDelivery.map((item) => {
-                            setChatList(prev => [...prev,
-                            {
-                                no: chatList.length + 1,
-                                chat: "고객명: " + item.customerName
-                                    + "\n휴대폰번호: " + item.phone
-                                    + "\n상품명: " + item.productName
-                                    + "\n상품 코드: " + item.code
-                                    + "\n배송 유형: " + item.type
-                                    + "\n배송 상태: " + item.state,
-                                date: nowTime,
-                                isBot: true
-                            }])
-                        })
-                    } else {
-                        setBotMessage("익일배송없음");
-                    }
-                } else if (chatText === "당일 배송") {
-                    if (todayDelivery.length !== 0) {
-                        todayDelivery.map((item) => {
-                            setChatList(prev => [...prev,
-                            {
-                                no: chatList.length + 1,
-                                chat: "고객명: " + item.customerName
-                                    + "\n휴대폰번호: " + item.phone
-                                    + "\n상품명: " + item.productName
-                                    + "\n상품 코드: " + item.code
-                                    + "\n배송 유형: " + item.type
-                                    + "\n배송 상태: " + item.state,
-                                date: nowTime,
-                                isBot: true
-                            }])
-                        })
-                    } else {
-                        setBotMessage("당일배송없음");
-                    }
-                } else if (chatText === "판매내역 전체") {
-                    if (sales.length !== 0) {
-                        sales.map((item) => {
-                            setChatList(prev => [...prev,
-                            {
-                                no: chatList.length + 1,
-                                chat: "고객명: " + item.customerName
-                                    + "\n상품코드: " + item.code
-                                    + "\n수량: " + item.count
-                                    + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    + "\n판매 일자: " + item.dateOfSale
-                                    + "\n배달 일자: " + item.dateOfDelivery
-                                    + "\n취소 일자: " + item.dateOfCancellation,
-                                date: nowTime,
-                                isBot: true
-                            }])
-                        })
-                    } else {
-                        setBotMessage("판매내역없음");
-                    }
-                } else if (chatText.includes("판매내역")) {
-                    const words = chatText.split(' ');
-
-                    if (words[1] === undefined) {
-                        setBotMessage('오류');
-                        return false;
-                    }
-
-                    var isEmpty = true;
-
-                    sales.map((item) => {
-                        if (item.customerName === words[1]) {
-                            setChatList(prev => [...prev,
-                            {
-                                no: chatList.length + 1,
-                                chat: "고객명: " + item.customerName
-                                    + "\n상품코드: " + item.code
-                                    + "\n수량: " + item.count
-                                    + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                                    + "\n판매 일자: " + item.dateOfSale
-                                    + "\n배달 일자: " + item.dateOfDelivery
-                                    + "\n취소 일자: " + item.dateOfCancellation,
-                                date: nowTime,
-                                isBot: true
-                            }])
-                            isEmpty = false
-                        }
-                    })
-
-                    if (isEmpty) {
-                        setBotMessage("판매내역없음")
-                    }
-
-                } else if (!checkKorean(chatText)) { //모델명
-                    const isFound = false;
-                    product.map((item) => {
-                        if (item.code === chatText) {
-                            setChatList(prev => [...prev,
-                            {
-                                no: chatList.length + 1,
-                                chat: "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n재고: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)",
-                                date: nowTime,
-                                isBot: true
-                            }])
-                            isFound = true;
-                        }
-                    })
-                    if (!isFound)
-                        setBotMessage("오류");
-                } else {
-                    setBotMessage("오류");
+                })
+                if (!isFound) {
+                    setMessage(manual['상품정보없음'], true, false, []);
+                    setMessage(manual["기능"], true, true, []);
                 }
-
+            } else if (chatText === "판매내역조회") {
+                searchSalesHistory();
+            } else if (chatText === "고객약속내역조회") {
+                searchCustomerPromise();
+            } else if (chatText === "당일배송내역조회") {
+                searchTodayDeliveryHistory();
+            } else if (chatText === "익일배송내역조회") {
+                searchTomorrowDeliveryHistory();
             } else {
-                setChatList(prev => [...prev,
-                {
-                    no: chatList.length + 1,
-                    chat: manual[chatText],
-                    date: nowTime,
-                    isBot: true
-                }])
+                setMessage(manual["오류"], true, false, []);
+                setMessage(manual["기능"], true, true, []);
             }
         }
     }
@@ -226,9 +224,26 @@ export default function ChattingScreen() {
                             <>
                                 {isBot ?
                                     <div className="botChatBox">
-                                        <div className="botChat">
-                                            <span>{item.chat}</span>
-                                        </div>
+                                        {item.list.length === 0
+                                            ? <div className="botChat">
+                                                <span>{item.chat}</span>
+                                                {item.isBtn ?
+                                                    <div>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(0)} >{menu[0]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(1)} >{menu[1]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(2)} >{menu[2]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(3)} >{menu[3]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(4)} >{menu[4]}</button>
+                                                    </div>
+                                                    : null
+                                                }
+                                            </div>
+                                            :
+                                            <div className="botChatList">
+                                                <Scroll list={item.list} />
+                                            </div>
+
+                                        }
                                         <span className="botDate">{item.date}</span>
                                     </div>
                                     :
@@ -243,7 +258,7 @@ export default function ChattingScreen() {
                         )
                     })
                 }
-                <div ref={messagesEndRef}/>
+                <div ref={messagesEndRef} />
             </div>
             <div className="footer">
                 <input
