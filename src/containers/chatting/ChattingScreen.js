@@ -233,10 +233,10 @@ export default function ChattingScreen() {
                                     </div>
                                     :
                                     <div className="userChatBox">
+                                        <span className="userDate">{item.date}</span>
                                         <div className="userChat">
                                             <span>{item.chat}</span>
                                         </div>
-                                        <span className="userDate">{item.date}</span>
                                     </div>
                                 }
                             </>
