@@ -4,9 +4,11 @@ import "./Login.css";
 import Modal from '../../components/modal/Modal';
 import { userData } from "../../data/User";
 import useUser from "../../context/hook/useUser";
+import useIsLogin from "../../context/hook/useIsLogin";
 
 export default function LoginScreen() {
     const { setUser } = useUser();
+    const { setIsLogin } = useIsLogin();
 
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
@@ -32,6 +34,7 @@ export default function LoginScreen() {
                     store: item.store,
                     name: item.name
                 })
+                setIsLogin(true);
                 navigate("/chat");
             }
         })

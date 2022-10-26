@@ -10,11 +10,16 @@ const AppProvider = ({children}) => {
         name: ""
     });
 
+    //IsLogin
+    const [isLogin, setIsLogin] = useState(false);
+
     return (
         <AppContext.Provider
             value={{
                 user,
-                setUser
+                setUser,
+                isLogin,
+                setIsLogin
             }}>
             {children}
         </AppContext.Provider>
