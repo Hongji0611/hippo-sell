@@ -8,6 +8,7 @@ import { sales } from "../../data/SalesHistory";
 import { todayDelivery, tomorrowDelivery } from "../../data/DeliveryHistory";
 import { promise } from "../../data/CustomerPromise";
 import { menu } from "../../data/Menu";
+import Scroll from "../../components/scroll/Scroll";
 
 export default function ChattingScreen() {
     const { user } = useUser();
@@ -22,6 +23,7 @@ export default function ChattingScreen() {
             date: nowTime,
             isBot: true,
             isBtn: false,
+            list: []
         },
         {
             no: 2,
@@ -29,6 +31,7 @@ export default function ChattingScreen() {
             date: nowTime,
             isBot: true,
             isBtn: true,
+            list: []
         }
     ]);
 
@@ -54,23 +57,24 @@ export default function ChattingScreen() {
         return regx.test(str);
     }
 
-    const setMessage = (_chat, _isBot, _isBtn) => {
+    const setMessage = (_chat, _isBot, _isBtn, _list) => {
         setChatList(prev => [...prev,
         {
             no: chatList.length + 1,
             chat: _chat,
             date: nowTime,
             isBot: _isBot,
-            isBtn: _isBtn
+            isBtn: _isBtn,
+            list: _list
         }]);
     }
 
     const setOnClickMenu = (index) => {
-        setMessage(menu[index], false, false);
+        setMessage(menu[index], false, false, []);
 
         switch (index) {
             case 0:
-                setMessage(manual['상품정보조회'], true, false);
+                setMessage(manual['상품정보조회'], true, false, []);
                 break;
             case 1: //판매내역조회
                 searchSalesHistory();
@@ -81,7 +85,7 @@ export default function ChattingScreen() {
                 break;
 
             case 3: //당일배송내역조회
-                searchTodayDeliveryHistory();  
+                searchTodayDeliveryHistory();
                 break;
 
             case 4: //익일배송내역조회
@@ -94,7 +98,9 @@ export default function ChattingScreen() {
 
     const searchSalesHistory = () => {
         if (sales.length !== 0) {
-            setMessage(manual['판매내역조회'], true, false);
+            setMessage(manual['판매내역조회'], true, false, []);
+            var list = []
+
             sales.map((item) => {
                 const str = "고객명: " + item.customerName
                     + "\n상품코드: " + item.code
@@ -103,34 +109,39 @@ export default function ChattingScreen() {
                     + "\n판매 일자: " + item.dateOfSale
                     + "\n배달 일자: " + item.dateOfDelivery
                     + "\n취소 일자: " + item.dateOfCancellation;
-                setMessage(str, true, false);
+                list.push(str);
             })
+            setMessage("", true, false, list);
+
         } else {
-            setMessage(manual['판매내역없음'], true, false);
+            setMessage(manual['판매내역없음'], true, false, []);
         }
-        setMessage(manual["기능"], true, true);
+        setMessage(manual["기능"], true, true, []);
     }
 
     const searchCustomerPromise = () => {
         if (promise.length !== 0) {
-            setMessage(manual['고객약속내역조회'], true, false);
+            setMessage(manual['고객약속내역조회'], true, false, []);
+            var list = [];
             promise.map((item) => {
                 const str = "고객명: " + item.customerName
                     + "\n휴대폰번호: " + item.phone
                     + "\n약속예정일자: " + item.date
                     + "\n상담 유형: " + item.type
                     + "\n약속 내용: " + item.contents;
-                setMessage(str, true, false);
+                list.push(str);
             })
+            setMessage("", true, false, list);
         } else {
-            setMessage(manual['약속내역없음'], true, false);
+            setMessage(manual['약속내역없음'], true, false, []);
         }
-        setMessage(manual["기능"], true, true);
+        setMessage(manual["기능"], true, true, []);
     }
 
     const searchTodayDeliveryHistory = () => {
         if (todayDelivery.length !== 0) {
-            setMessage(manual['당일배송내역조회'], true, false);
+            setMessage(manual['당일배송내역조회'], true, false, []);
+            var list = [];
             todayDelivery.map((item) => {
                 const str = "고객명: " + item.customerName
                     + "\n휴대폰번호: " + item.phone
@@ -138,62 +149,64 @@ export default function ChattingScreen() {
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
                     + "\n배송 상태: " + item.state;
-
-                setMessage(str, true, false);
+                list.push(str);
             })
+            setMessage("", true, false, list);
         } else {
-            setMessage(manual['당일배송없음'], true, false);
+            setMessage(manual['당일배송없음'], true, false, []);
         }
-        setMessage(manual["기능"], true, true);
+        setMessage(manual["기능"], true, true, []);
     }
 
     const searchTomorrowDeliveryHistory = () => {
         if (tomorrowDelivery.length !== 0) {
-            setMessage(manual['익일배송내역조회'], true, false);
+            setMessage(manual['익일배송내역조회'], true, false, []);
+            var list = [];
             tomorrowDelivery.map((item) => {
                 const str = "고객명: " + item.customerName
-                + "\n휴대폰번호: " + item.phone
-                + "\n상품명: " + item.productName
-                + "\n상품 코드: " + item.code
-                + "\n배송 유형: " + item.type
-                + "\n배송 상태: " + item.state;
-                setMessage(str, true, false);
+                    + "\n휴대폰번호: " + item.phone
+                    + "\n상품명: " + item.productName
+                    + "\n상품 코드: " + item.code
+                    + "\n배송 유형: " + item.type
+                    + "\n배송 상태: " + item.state;
+                list.push(str);
             })
+            setMessage("", true, false, list);
         } else {
-            setMessage(manual['익일배송없음'], true, false);
+            setMessage(manual['익일배송없음'], true, false, []);
         }
-        setMessage(manual["기능"], true, true);
+        setMessage(manual["기능"], true, true, []);
     }
 
     const handleAddChat = () => {
         if (chatText.length !== 0) {
-            setMessage(chatText, false, false);
+            setMessage(chatText, false, false, []);
             if (!checkKorean(chatText)) { //상품정보조회
                 const isFound = false;
                 product.map((item) => {
                     if (item.code === chatText) {
                         const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
-                        setMessage(str, true, false);
-                        setMessage(manual["기능"], true, true);
+                        setMessage(str, true, false, []);
+                        setMessage(manual["기능"], true, true, []);
                         setChatText("");
                         isFound = true;
                     }
                 })
                 if (!isFound) {
-                    setMessage(manual['상품정보없음'], true, false);
-                    setMessage(manual["기능"], true, true);
+                    setMessage(manual['상품정보없음'], true, false, []);
+                    setMessage(manual["기능"], true, true, []);
                 }
-            } else if(chatText === "판매내역조회"){
+            } else if (chatText === "판매내역조회") {
                 searchSalesHistory();
-            } else if(chatText === "고객약속내역조회"){
+            } else if (chatText === "고객약속내역조회") {
                 searchCustomerPromise();
-            } else if(chatText === "당일배송내역조회"){
+            } else if (chatText === "당일배송내역조회") {
                 searchTodayDeliveryHistory();
-            } else if(chatText === "익일배송내역조회"){
+            } else if (chatText === "익일배송내역조회") {
                 searchTomorrowDeliveryHistory();
-            }else{
-                setMessage(manual["오류"], true, false);
-                setMessage(manual["기능"], true, true);
+            } else {
+                setMessage(manual["오류"], true, false, []);
+                setMessage(manual["기능"], true, true, []);
             }
         }
     }
@@ -211,19 +224,26 @@ export default function ChattingScreen() {
                             <>
                                 {isBot ?
                                     <div className="botChatBox">
-                                        <div className="botChat">
-                                            <span>{item.chat}</span>
-                                            {item.isBtn ?
-                                                <div>
-                                                    <button className="menuBtn" onClick={() => setOnClickMenu(0)} >{menu[0]}</button>
-                                                    <button className="menuBtn" onClick={() => setOnClickMenu(1)} >{menu[1]}</button>
-                                                    <button className="menuBtn" onClick={() => setOnClickMenu(2)} >{menu[2]}</button>
-                                                    <button className="menuBtn" onClick={() => setOnClickMenu(3)} >{menu[3]}</button>
-                                                    <button className="menuBtn" onClick={() => setOnClickMenu(4)} >{menu[4]}</button>
-                                                </div>
-                                                : null
-                                            }
-                                        </div>
+                                        {item.list.length === 0
+                                            ? <div className="botChat">
+                                                <span>{item.chat}</span>
+                                                {item.isBtn ?
+                                                    <div>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(0)} >{menu[0]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(1)} >{menu[1]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(2)} >{menu[2]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(3)} >{menu[3]}</button>
+                                                        <button className="menuBtn" onClick={() => setOnClickMenu(4)} >{menu[4]}</button>
+                                                    </div>
+                                                    : null
+                                                }
+                                            </div>
+                                            :
+                                            <div className="botChatList">
+                                                <Scroll list={item.list} />
+                                            </div>
+
+                                        }
                                         <span className="botDate">{item.date}</span>
                                     </div>
                                     :

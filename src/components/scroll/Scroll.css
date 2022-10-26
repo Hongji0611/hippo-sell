@@ -1,0 +1,18 @@
+.listItem{
+    width: 170px;
+    padding: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    border: 1px;
+    border-style: solid;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0;
+    border-color: #adb5bd;
+
+    line-height: 20px;
+}
+
+div.react-horizontal-scrolling-menu--scroll-container > div:nth-child(1) > div {
+    border-style: none;
+}
