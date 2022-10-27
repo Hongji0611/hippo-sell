@@ -11,10 +11,53 @@
     width: 100%;
 
     background-color: white;
-    text-align: center;
     height: 50px;
     line-height: 50px;
     z-index: 20;
+    
+    display: flex;
+}
+.left{
+    flex: 1;
+}
+
+.headerTitle{
+    flex: 1;
+    text-align: center;
+}
+
+.right{
+    flex: 1;
+}
+
+.menu{
+    width: 20px;
+    height: 20px;
+    
+    padding: 15px;
+    float: right;
+}
+
+.menuBox{
+    z-index: 20;
+    position: fixed;
+    top: 50px;
+    right: 0;
+    text-align: center;
+
+    background-color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    box-shadow: 0 4px 20px rgb(205, 204, 204);
+    margin-right: 6px;
+}
+
+.logout{
+    padding: 12px 20px;
+}
+
+.init{
+    padding: 12px 20px;
 }
 
 .body{
@@ -31,6 +74,21 @@
 
     position: fixed;
     bottom: 0;
+}
+
+.autoCompleteBox{
+    background-color: rgb(240, 246, 255);
+    width: 100%;
+    max-height: 200px;
+    overflow: scroll;
+
+    position: fixed;
+    bottom: 50px;
+    box-shadow: 0 -4px 20px rgb(205, 204, 204);
+}
+
+.autoComplete{
+    padding: 14px 20px;
 }
 
 .chatTextBox{

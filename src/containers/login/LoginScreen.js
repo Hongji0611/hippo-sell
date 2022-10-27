@@ -41,6 +41,14 @@ export default function LoginScreen() {
         openModal();
     };
 
+    const checkId = () => {
+        userData.map((item) => {
+            if (item.id === id) {
+                setStore(item.store);
+            }
+        })
+    };
+
     return (
         <div className="loginBox">
             <p className="title">판매하마와</p>
@@ -50,7 +58,7 @@ export default function LoginScreen() {
                     className="inputBox"
                     type="text"
                     name="id"
-                    placeholder="아이디를 입력하세요"
+                    placeholder="사번을 입력하세요"
                     onChange={(e) => setId(e.target.value)}
                     value={id}
                 />
@@ -75,6 +83,7 @@ export default function LoginScreen() {
                     placeholder="지점명을 입력하세요"
                     onChange={(e) => setStore(e.target.value)}
                     value={store}
+                    onFocus={checkId}
                 />
             </div>
 
