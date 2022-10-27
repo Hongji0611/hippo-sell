@@ -9,15 +9,22 @@ import { todayDelivery, tomorrowDelivery } from "../../data/DeliveryHistory";
 import { promise } from "../../data/CustomerPromise";
 import { menu } from "../../data/Menu";
 import Scroll from "../../components/scroll/Scroll";
+import useIsLogin from "../../context/hook/useIsLogin";
+import { useNavigate } from "react-router-dom";
 
 export default function ChattingScreen() {
     const { user } = useUser();
+    const { setIsLogin } = useIsLogin();
+    const navigate = useNavigate();
 
     const nowTime = moment().format('HH:mm');
 
+    const [hamburger, setHamburder] = useState(false);
     const [search, setSearch] = useState([]);
     const [chatText, setChatText] = useState("");
-    const [chatList, setChatList] = useState([
+    const [chatList, setChatList] = useState([]);
+
+    const chatInit = [
         {
             no: 1,
             chat: "반갑습니다. " + user.name + "님",
@@ -33,8 +40,7 @@ export default function ChattingScreen() {
             isBot: true,
             isBtn: true,
             list: []
-        }
-    ]);
+        }];
 
     const messagesEndRef = useRef(null)
 
@@ -45,6 +51,10 @@ export default function ChattingScreen() {
     useEffect(() => {
         scrollToBottom()
     }, [chatList]);
+
+    useEffect(() => {
+        setChatList(chatInit);
+    }, [])
 
     const onKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -240,11 +250,40 @@ export default function ChattingScreen() {
         searchProduct(code);
     }
 
+    const setOnClickHambergerBar = () => {
+        setHamburder(!hamburger);
+    }
+
+    const setOnClickLogout = () => {
+        setIsLogin(false);
+        setHamburder(!hamburger)
+        navigate("/");
+    }
+
+    const setOnClickInit = () => {
+        setChatList([]);
+        setHamburder(!hamburger);
+        setChatList(chatInit);
+    }
+
     return (
         <div className="chatBox">
             <div className="header">
+                <p className="left"></p>
                 <p className="headerTitle">판매하마</p>
+                <p className="right">
+                    <img className="menu" alt="menu" src="img/menu.png" onClick={setOnClickHambergerBar} />
+                </p>
             </div>
+            {
+                hamburger
+                    ? <div className="menuBox">
+                        <p className="logout" onClick={setOnClickLogout}>로그아웃</p>
+                        <p className="init" onClick={setOnClickInit}>대화이력 삭제</p>
+                    </div>
+                    : null
+            }
+
             <div className="body">
                 {
                     chatList.map((item) => {
