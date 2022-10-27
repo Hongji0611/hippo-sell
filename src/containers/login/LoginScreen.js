@@ -50,7 +50,7 @@ export default function LoginScreen() {
                     className="inputBox"
                     type="text"
                     name="id"
-                    placeholder="아이디를 입력하세요"
+                    placeholder="사번을 입력하세요"
                     onChange={(e) => setId(e.target.value)}
                     value={id}
                 />
