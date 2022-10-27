@@ -33,6 +33,21 @@
     bottom: 0;
 }
 
+.autoCompleteBox{
+    background-color: rgb(240, 246, 255);
+    width: 100%;
+    max-height: 200px;
+    overflow: scroll;
+
+    position: fixed;
+    bottom: 50px;
+    box-shadow: 0 -4px 20px rgb(205, 204, 204);
+}
+
+.autoComplete{
+    padding: 14px 20px;
+}
+
 .chatTextBox{
     width: 100%;
     border: none;

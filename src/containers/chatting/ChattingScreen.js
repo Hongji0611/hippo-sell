@@ -15,6 +15,7 @@ export default function ChattingScreen() {
 
     const nowTime = moment().format('HH:mm');
 
+    const [search, setSearch] = useState([]);
     const [chatText, setChatText] = useState("");
     const [chatList, setChatList] = useState([
         {
@@ -49,6 +50,7 @@ export default function ChattingScreen() {
         if (e.key === 'Enter') {
             handleAddChat();
             setChatText("");
+            setSearch([]);
         }
     }
 
@@ -93,6 +95,23 @@ export default function ChattingScreen() {
                 break;
             default:
                 break;
+        }
+    }
+
+    const searchProduct = (chatText) => {
+        const isFound = false;
+        product.map((item) => {
+            if (item.code === chatText) {
+                const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
+                setMessage(str, true, false, []);
+                setMessage(manual["기능"], true, true, []);
+                setChatText("");
+                isFound = true;
+            }
+        })
+        if (!isFound) {
+            setMessage(manual['상품정보없음'], true, false, []);
+            setMessage(manual["기능"], true, true, []);
         }
     }
 
@@ -182,20 +201,8 @@ export default function ChattingScreen() {
         if (chatText.length !== 0) {
             setMessage(chatText, false, false, []);
             if (!checkKorean(chatText)) { //상품정보조회
-                const isFound = false;
-                product.map((item) => {
-                    if (item.code === chatText) {
-                        const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
-                        setMessage(str, true, false, []);
-                        setMessage(manual["기능"], true, true, []);
-                        setChatText("");
-                        isFound = true;
-                    }
-                })
-                if (!isFound) {
-                    setMessage(manual['상품정보없음'], true, false, []);
-                    setMessage(manual["기능"], true, true, []);
-                }
+                setSearch([]);
+                searchProduct(chatText);
             } else if (chatText === "판매내역조회") {
                 searchSalesHistory();
             } else if (chatText === "고객약속내역조회") {
@@ -209,6 +216,28 @@ export default function ChattingScreen() {
                 setMessage(manual["기능"], true, true, []);
             }
         }
+    }
+
+    const updateChange = (e) => {
+        let data = e.target.value;
+        setChatText(data);
+        let filterData = [];
+        if (!checkKorean(chatText) && data.length > 4) {
+            filterData = product.filter((i) =>
+                i.code.includes(data)
+            );
+        }
+        if (data.length === 0) {
+            filterData = [];
+        }
+        setSearch(filterData);
+    }
+
+    const setSearchToChatText = (code) => {
+        setMessage(code, false, false, []);
+        setChatText("");
+        setSearch([]);
+        searchProduct(code);
     }
 
     return (
@@ -260,13 +289,20 @@ export default function ChattingScreen() {
                 }
                 <div ref={messagesEndRef} />
             </div>
+            <div className="autoCompleteBox">
+                {
+                    search.map((item) => {
+                        return (<p className="autoComplete" onClick={() => setSearchToChatText(item.code)}>{item.code}</p>)
+                    })
+                }
+            </div>
             <div className="footer">
                 <input
                     className="chatTextBox"
                     type="text"
                     name="chatText"
                     placeholder="판매하마와 대화해보세요"
-                    onChange={(e) => setChatText(e.target.value)}
+                    onChange={(e) => updateChange(e)}
                     value={chatText}
                     onKeyPress={onKeyPress}
                 />
