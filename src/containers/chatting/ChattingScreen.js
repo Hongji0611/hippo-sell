@@ -127,7 +127,7 @@ export default function ChattingScreen() {
         const isFound = false;
         product.map((item) => {
             if (item.code === chatText) {
-                const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
+                const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n재고: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
                 var list = []
                 item.detail.map((logistic, index) => {
                     const str2 = "[" + logisticsList[index] + "]\n"
