@@ -211,8 +211,8 @@ export default function ChattingScreen() {
             setMessage(manual['고객약속내역조회'], true, false, [], false);
             var list = [];
             promise.map((item) => {
-                const str = "고객명: " + item.customerName
-                    + "\n휴대폰번호: " + item.phone
+                const str = "고객명: " + item.customerName.slice(0, -1) + "*"
+                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                     + "\n약속예정일자: " + item.date
                     + "\n상담 유형: " + item.type
                     + "\n약속 내용: " + item.contents;
@@ -230,8 +230,8 @@ export default function ChattingScreen() {
             setMessage(manual['당일배송내역조회'], true, false, [], false);
             var list = [];
             todayDelivery.map((item) => {
-                const str = "고객명: " + item.customerName
-                    + "\n휴대폰번호: " + item.phone
+                const str = "고객명: " + item.customerName.slice(0, -1) + "*"
+                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                     + "\n상품명: " + item.productName
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
@@ -250,8 +250,8 @@ export default function ChattingScreen() {
             setMessage(manual['익일배송내역조회'], true, false, [], false);
             var list = [];
             tomorrowDelivery.map((item) => {
-                const str = "고객명: " + item.customerName
-                    + "\n휴대폰번호: " + item.phone
+                const str = "고객명: " + item.customerName.slice(0, -1) + "*"
+                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                     + "\n상품명: " + item.productName
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
