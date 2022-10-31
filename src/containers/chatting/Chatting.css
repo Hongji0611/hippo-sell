@@ -197,4 +197,61 @@
     margin-top: 10px;
     border: 0;
     border-radius: 6px;
+    font-size: 14px;
+}
+
+/* sheet */
+.sheetTitle{
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 20px;
+    border-bottom: 2px;
+    border-color: #f0f0f0;
+    border-style: solid;
+}
+
+.sheetBody{
+    padding: 20px 30px;
+}
+
+.sheetNotion{
+    font-size: 14px;
+    float: right;
+    margin-top: 20px;
+}
+
+.sheetInputBox{
+    text-align: center;
+    padding: 10px;
+}
+
+.sheetBtnBox{
+    display: flex;
+    width: 100%;
+}
+
+.sheetCancel{
+    flex: 1;
+    padding: 16px 20px;
+    margin: 10px;
+    border: 0;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #EFF2F7;
+}
+
+.sheetSearch{
+    flex: 1;
+    padding: 16px 20px;
+    margin: 10px;
+    border: 0;
+    border-radius: 6px;
+    text-align: center;
+    background-color: rgb(61, 145, 255);
+}
+
+.sheetContainer{
+    overflow: scroll;
+    padding-bottom: 200px;
 }

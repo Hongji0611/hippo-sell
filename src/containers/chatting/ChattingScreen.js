@@ -11,10 +11,15 @@ import { menu } from "../../data/Menu";
 import Scroll from "../../components/scroll/Scroll";
 import useIsLogin from "../../context/hook/useIsLogin";
 import { useNavigate } from "react-router-dom";
+import Sheet from 'react-modal-sheet';
+import Calendar from '../../components/calendar/Calendar';
+import useDate from "../../context/hook/useDate";
 
 export default function ChattingScreen() {
     const { user } = useUser();
     const { setIsLogin } = useIsLogin();
+    const { startDate, endDate } = useDate();
+
     const navigate = useNavigate();
 
     const nowTime = moment().format('HH:mm');
@@ -23,6 +28,12 @@ export default function ChattingScreen() {
     const [search, setSearch] = useState([]);
     const [chatText, setChatText] = useState("");
     const [chatList, setChatList] = useState([]);
+    const [bottomIsOpen, setBottomIsOpen] = useState(false);
+
+    // 판매내역조회
+    const [salesPeriod, setSalesPeriod] = useState("");
+    const [salesCustomer, setSalesCustomer] = useState("");
+    const [salesPhone, setSalesPhone] = useState("");
 
     const chatInit = [
         {
@@ -89,7 +100,8 @@ export default function ChattingScreen() {
                 setMessage(manual['상품정보조회'], true, false, []);
                 break;
             case 1: //판매내역조회
-                searchSalesHistory();
+                // searchSalesHistory();
+                setBottomIsOpen(true);
                 break;
 
             case 2: //고객약속내역조회
@@ -126,26 +138,32 @@ export default function ChattingScreen() {
     }
 
     const searchSalesHistory = () => {
+        setBottomIsOpen(false);
+
         if (sales.length !== 0) {
-            setMessage(manual['판매내역조회'], true, false, []);
             var list = []
 
             sales.map((item) => {
-                const str = "고객명: " + item.customerName
-                    + "\n상품코드: " + item.code
-                    + "\n수량: " + item.count
-                    + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    + "\n판매 일자: " + item.dateOfSale
-                    + "\n배달 일자: " + item.dateOfDelivery
-                    + "\n취소 일자: " + item.dateOfCancellation;
-                list.push(str);
+                if (item.customerName === salesCustomer && item.phone === salesPhone && startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
+                    const str = "고객명: " + item.customerName
+                        + "\n상품코드: " + item.code
+                        + "\n수량: " + item.count
+                        + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        + "\n판매 일자: " + getYYYMMDD(item.dateOfSale)
+                        + "\n배달 일자: " + getYYYMMDD(item.dateOfDelivery)
+                        + "\n취소 일자: " + getYYYMMDD(item.dateOfCancellation);
+                    list.push(str);
+                }
             })
+            console.log(list);
             setMessage("", true, false, list);
-
         } else {
             setMessage(manual['판매내역없음'], true, false, []);
         }
         setMessage(manual["기능"], true, true, []);
+
+        setSalesCustomer("");
+        setSalesPhone("");
     }
 
     const searchCustomerPromise = () => {
@@ -266,6 +284,18 @@ export default function ChattingScreen() {
         setChatList(chatInit);
     }
 
+    const setOnClickSheetCancel = () => {
+        setBottomIsOpen(false);
+    }
+
+    function getYYYMMDD(date){
+        var year = date.getFullYear();
+        var month = ("0" + (1 + date.getMonth())).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+    
+        return year + "-" + month + "-" + day;
+    }
+
     return (
         <div className="chatBox">
             <div className="header">
@@ -346,6 +376,43 @@ export default function ChattingScreen() {
                     onKeyPress={onKeyPress}
                 />
             </div>
+
+            <Sheet snapPoints={[700, 400, 100, 0]} isOpen={bottomIsOpen} onClose={() => setBottomIsOpen(false)}>
+                <Sheet.Container>
+                    <p className="sheetTitle">판매내역조회</p>
+                    <div className="sheetContainer">
+                        <div className="sheetBody">
+                            <p className="sheetContent">{manual['판매내역조회']}</p>
+                            <p className="sheetNotion">{manual["조회기간"]}</p>
+                        </div>
+                        <div className="sheetInputBox">
+                            <Calendar />
+                            <input
+                                className="inputBox"
+                                type="text"
+                                name="salesCustomer"
+                                placeholder="고객명을 입력해주세요"
+                                onChange={(e) => setSalesCustomer(e.target.value)}
+                                value={salesCustomer}
+                            />
+                            <input
+                                className="inputBox"
+                                type="text"
+                                name="salesPhone"
+                                placeholder="전화번호를 입력해주세요 ex) 010-1234-1234"
+                                onChange={(e) => setSalesPhone(e.target.value)}
+                                value={salesPhone}
+                            />
+                        </div>
+                        <div className="sheetBtnBox">
+                            <p className="sheetCancel" onClick={setOnClickSheetCancel}>취소</p>
+                            <p className="sheetSearch" onClick={searchSalesHistory}>조회</p>
+                        </div>
+                    </div>
+                </Sheet.Container>
+
+                <Sheet.Backdrop />
+            </Sheet>
         </div>
     );
 }

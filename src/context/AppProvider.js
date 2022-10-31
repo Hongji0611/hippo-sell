@@ -13,13 +13,21 @@ const AppProvider = ({children}) => {
     //IsLogin
     const [isLogin, setIsLogin] = useState(false);
 
+    //Calender
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+
     return (
         <AppContext.Provider
             value={{
                 user,
                 setUser,
                 isLogin,
-                setIsLogin
+                setIsLogin,
+                startDate,
+                setStartDate,
+                endDate,
+                setEndDate
             }}>
             {children}
         </AppContext.Provider>

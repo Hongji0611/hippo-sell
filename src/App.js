@@ -12,14 +12,15 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<LoginScreen />} />
-            <Route
+            {/* <Route
               path="/chat"
               element={
                 <PrivateRoute
                   component={<ChattingScreen />}
                 />
               }
-            />
+            /> */}
+            <Route path="/chat" element={<ChattingScreen/>} />
           </Routes>
         </Router>
       </AppProvider>
