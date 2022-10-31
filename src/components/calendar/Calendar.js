@@ -2,12 +2,14 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import { DateRange } from 'react-date-range';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDate from '../../context/hook/useDate';
+import { getYYYMMDD } from './DateYYYYMMDD';
+import './Calendar.css'
 
 function Calender() {
     const today = new Date();
-    const { setStartDate, setEndDate } = useDate();
+    const { setStartDate, setEndDate, startDate, endDate } = useDate();
 
     const [state, setState] = useState([
         {
@@ -32,6 +34,9 @@ function Calender() {
                 moveRangeOnFirstSelection={false}
                 ranges={state}
             />
+            <p className='setDate'>
+                설정하신 일자: {getYYYMMDD(startDate)} ~ {getYYYMMDD(endDate)}
+            </p>
         </div>
     )
 

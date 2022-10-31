@@ -6,6 +6,12 @@ const menu = [
     "익일배송내역조회"
 ];
 
+const salesMenu = [
+    "날짜로 조회하기(설정한 기간동안 전체 판매내역 조회)",
+    "고객명으로 조회하기(설정한 고객 판매내역 조회)"
+];
+
 export{
-    menu
+    menu,
+    salesMenu
 }

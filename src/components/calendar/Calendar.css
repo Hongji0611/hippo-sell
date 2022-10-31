@@ -1,0 +1,11 @@
+.setDate{
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+
+    font-size: 16px;
+    line-height: 46px;
+    padding-left: 16px;
+    text-align: left;
+    margin: 5px;
+}
