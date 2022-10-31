@@ -3,7 +3,7 @@ import moment from 'moment';
 import "./Chatting.css";
 import { manual } from "../../data/Manual";
 import useUser from "../../context/hook/useUser";
-import { product } from "../../data/Product";
+import { product, logisticsList } from "../../data/Product";
 import { sales } from "../../data/SalesHistory";
 import { todayDelivery, tomorrowDelivery } from "../../data/DeliveryHistory";
 import { promise } from "../../data/CustomerPromise";
@@ -128,7 +128,19 @@ export default function ChattingScreen() {
         product.map((item) => {
             if (item.code === chatText) {
                 const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n물류: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
+                var list = []
+                item.detail.map((logistic, index) => {
+                    const str2 = "[" + logisticsList[index] + "]\n"
+                        + "\n실가용수량: " + logistic[0]
+                        + "\n총상품수량: " + logistic[1]
+                        + "\n지점미출하: " + logistic[2]
+                        + "\n입고예정: " + logistic[3]
+                        +"\n시범진열: "+ logistic[4]
+                    list.push(str2);
+                })
                 setMessage(str, true, false, [], false);
+                setMessage("", true, false, list, false);
+
                 setMessage(manual["기능"], true, true, [], false);
                 setChatText("");
                 isFound = true;
@@ -149,10 +161,10 @@ export default function ChattingScreen() {
         if (sales.length !== 0) {
             var list = []
             sales.map((item) => {
-                if(isDate){
+                if (isDate) {
                     if (startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
-                        const str = "고객명: " + item.customerName.slice(0, -1) +"*"
-                            +"\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                        const str = "고객명: " + item.customerName.slice(0, -1) + "*"
+                            + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
                             + "\n수량: " + item.count
                             + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -161,10 +173,10 @@ export default function ChattingScreen() {
                             + "\n취소 일자: " + getYYYMMDD(item.dateOfCancellation);
                         list.push(str);
                     }
-                }else{
+                } else {
                     if (item.customerName === salesCustomer && item.phone === salesPhone && startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
-                        const str = "고객명: " + item.customerName.slice(0, -1) +"*"
-                            +"\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                        const str = "고객명: " + item.customerName.slice(0, -1) + "*"
+                            + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
                             + "\n수량: " + item.count
                             + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -175,13 +187,13 @@ export default function ChattingScreen() {
                     }
                 }
             })
-            if(list.length === 0){
+            if (list.length === 0) {
                 setMessage(manual["판매내역없음"], true, false, [], false);
-            }else{
-                if(isDate){
+            } else {
+                if (isDate) {
                     setMessage("요청하신 일자의 판매내역입니다.", true, false, [], false);
-                }else{
-                    setMessage("요청하신 일자의 "+salesCustomer.slice(0, -1)+"*님 판매내역입니다.", true, false, [], false);
+                } else {
+                    setMessage("요청하신 일자의 " + salesCustomer.slice(0, -1) + "*님 판매내역입니다.", true, false, [], false);
                 }
                 setMessage("", true, false, list, false);
             }
@@ -357,8 +369,8 @@ export default function ChattingScreen() {
                                                 }
                                                 {item.isSales ?
                                                     <div>
-                                                        <button className="menuBtn" onClick={() => {setBottomIsOpen(true); setIsDate(true);}} >{salesMenu[0]}</button>
-                                                        <button className="menuBtn" onClick={() => {setBottomIsOpen(true); setIsDate(false);}} >{salesMenu[1]}</button>
+                                                        <button className="menuBtn" onClick={() => { setBottomIsOpen(true); setIsDate(true); }} >{salesMenu[0]}</button>
+                                                        <button className="menuBtn" onClick={() => { setBottomIsOpen(true); setIsDate(false); }} >{salesMenu[1]}</button>
                                                     </div>
                                                     : null
                                                 }
