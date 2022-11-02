@@ -32,7 +32,6 @@ export default function ChattingScreen() {
     const [bottomIsOpen, setBottomIsOpen] = useState(false);
 
     // 판매내역조회
-    const [salesCustomer, setSalesCustomer] = useState("");
     const [salesPhone, setSalesPhone] = useState("");
     const [isDate, setIsDate] = useState(true);
 
@@ -45,6 +44,7 @@ export default function ChattingScreen() {
             isMenu: false,
             list: [],
             isSales: false,
+            isProduct: false
         },
         {
             no: 2,
@@ -53,7 +53,8 @@ export default function ChattingScreen() {
             isBot: true,
             isMenu: true,
             list: [],
-            isSales: false
+            isSales: false,
+            isProduct: false
         }];
 
     const messagesEndRef = useRef(null)
@@ -83,7 +84,7 @@ export default function ChattingScreen() {
         return regx.test(str);
     }
 
-    const setMessage = (_chat, _isBot, _isMenu, _list, _isSales) => {
+    const setMessage = (_chat, _isBot, _isMenu, _list, _isSales, _isProduct) => {
         setChatList(prev => [...prev,
         {
             no: chatList.length + 1,
@@ -92,16 +93,17 @@ export default function ChattingScreen() {
             isBot: _isBot,
             isMenu: _isMenu,
             list: _list,
-            isSales: _isSales
+            isSales: _isSales,
+            isProduct: _isProduct
         }]);
     }
 
     const setOnClickMenu = (index) => {
-        setMessage(menu[index], false, false, [], false);
+        setMessage(menu[index], false, false, [], false, false);
 
         switch (index) {
             case 0:
-                setMessage(manual['상품정보조회'], true, false, []);
+                setMessage(manual['상품정보조회'], true, false, [], false, false);
                 break;
             case 1: //판매내역조회
                 setOnClickSalesBtn();
@@ -138,22 +140,21 @@ export default function ChattingScreen() {
                         + "\n시범진열: " + logistic[4]
                     list.push(str2);
                 })
-                setMessage(str, true, false, [], false);
-                setMessage("", true, false, list, false);
+                setMessage(str, true, false, [], false, false);
+                setMessage("", true, false, list, false, false);
 
-                setMessage(manual["기능"], true, true, [], false);
+                setMessage(manual["기능"], true, true, [], false, false);
                 setChatText("");
                 isFound = true;
             }
         })
         if (!isFound) {
-            setMessage(manual['상품정보없음'], true, false, [], false);
-            setMessage(manual["기능"], true, true, [], false);
+            setMessage(manual['상품정보없음'], true, false, [], false, true);
         }
     }
 
     const setOnClickSalesBtn = () => {
-        setMessage(manual['판매내역조회방법'], true, false, [], true);
+        setMessage(manual['판매내역조회방법'], true, false, [], true, false);
     }
 
     const searchSalesHistory = () => {
@@ -197,14 +198,13 @@ export default function ChattingScreen() {
                 }
             } else {
                 if (isDate) {
-                    setMessage("요청하신 일자의 판매내역입니다.", true, false, [], false);
+                    setMessage("요청하신 일자의 판매내역입니다.", true, false, [], false, false);
                 } else {
-                    setMessage("요청하신 일자의 " + name.slice(0, -1) + "*님 판매내역입니다.", true, false, [], false);
+                    setMessage("요청하신 일자의 " + name.slice(0, -1) + "*님 판매내역입니다.", true, false, [], false, false);
                 }
-                setMessage("", true, false, list, false);
+                setMessage("", true, false, list, false, false);
                 setBottomIsOpen(false);
-                setMessage(manual["기능"], true, true, [], false);
-                setSalesCustomer("");
+                setMessage(manual["기능"], true, true, [], false, false);
                 setSalesPhone("");
             }
         } else {
@@ -218,7 +218,7 @@ export default function ChattingScreen() {
 
     const searchCustomerPromise = () => {
         if (promise.length !== 0) {
-            setMessage(manual['고객약속내역조회'], true, false, [], false);
+            setMessage(manual['고객약속내역조회'], true, false, [], false, false);
             var list = [];
             promise.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
@@ -228,16 +228,16 @@ export default function ChattingScreen() {
                     + "\n약속 내용: " + item.contents;
                 list.push(str);
             })
-            setMessage("", true, false, list, false);
+            setMessage("", true, false, list, false, false);
         } else {
-            setMessage(manual['약속내역없음'], true, false, [], false);
+            setMessage(manual['약속내역없음'], true, false, [], false, false);
         }
-        setMessage(manual["기능"], true, true, [], false);
+        setMessage(manual["기능"], true, true, [], false, false);
     }
 
     const searchTodayDeliveryHistory = () => {
         if (todayDelivery.length !== 0) {
-            setMessage(manual['당일배송내역조회'], true, false, [], false);
+            setMessage(manual['당일배송내역조회'], true, false, [], false, false);
             var list = [];
             todayDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
@@ -248,16 +248,16 @@ export default function ChattingScreen() {
                     + "\n배송 상태: " + item.state;
                 list.push(str);
             })
-            setMessage("", true, false, list, false);
+            setMessage("", true, false, list, false, false);
         } else {
-            setMessage(manual['당일배송없음'], true, false, [], false);
+            setMessage(manual['당일배송없음'], true, false, [], false, false);
         }
-        setMessage(manual["기능"], true, true, [], false);
+        setMessage(manual["기능"], true, true, [], false, false);
     }
 
     const searchTomorrowDeliveryHistory = () => {
         if (tomorrowDelivery.length !== 0) {
-            setMessage(manual['익일배송내역조회'], true, false, [], false);
+            setMessage(manual['익일배송내역조회'], true, false, [], false, false);
             var list = [];
             tomorrowDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
@@ -268,16 +268,16 @@ export default function ChattingScreen() {
                     + "\n배송 상태: " + item.state;
                 list.push(str);
             })
-            setMessage("", true, false, list, false);
+            setMessage("", true, false, list, false, false);
         } else {
-            setMessage(manual['익일배송없음'], true, false, [], false);
+            setMessage(manual['익일배송없음'], true, false, [], false, false);
         }
-        setMessage(manual["기능"], true, true, [], false);
+        setMessage(manual["기능"], true, true, [], false, false);
     }
 
     const handleAddChat = () => {
         if (chatText.length !== 0) {
-            setMessage(chatText, false, false, [], false);
+            setMessage(chatText, false, false, [], false, false);
             if (!checkKorean(chatText)) { //상품정보조회
                 setSearch([]);
                 searchProduct(chatText);
@@ -290,8 +290,8 @@ export default function ChattingScreen() {
             } else if (chatText === "익일배송내역조회") {
                 searchTomorrowDeliveryHistory();
             } else {
-                setMessage(manual["오류"], true, false, [], false);
-                setMessage(manual["기능"], true, true, [], false);
+                setMessage(manual["오류"], true, false, [], false, false);
+                setMessage(manual["기능"], true, true, [], false, false);
             }
         }
     }
@@ -312,7 +312,7 @@ export default function ChattingScreen() {
     }
 
     const setSearchToChatText = (code) => {
-        setMessage(code, false, false, [], false);
+        setMessage(code, false, false, [], false, false);
         setChatText("");
         setSearch([]);
         searchProduct(code);
@@ -336,11 +336,13 @@ export default function ChattingScreen() {
 
     const setOnClickSheetCancel = () => {
         setBottomIsOpen(false);
-        setSalesCustomer("");
         setSalesPhone("");
-        setMessage(manual["기능"], true, true, [], false);
+        setMessage(manual["기능"], true, true, [], false, false);
     }
 
+    const setMenu = () => {
+        setMessage(manual["기능"], true, true, [], false, false);
+    }
     return (
         <div className="chatBox">
             <div className="header">
@@ -384,6 +386,12 @@ export default function ChattingScreen() {
                                                     <div>
                                                         <button className="menuBtn" onClick={() => { setBottomIsOpen(true); setIsDate(true); }} >{salesMenu[0]}</button>
                                                         <button className="menuBtn" onClick={() => { setBottomIsOpen(true); setIsDate(false); }} >{salesMenu[1]}</button>
+                                                    </div>
+                                                    : null
+                                                }
+                                                {item.isProduct ?
+                                                    <div>
+                                                        <button className="menuBtn" onClick={() => setMenu()}>전체 메뉴 조회</button>
                                                     </div>
                                                     : null
                                                 }
