@@ -135,7 +135,7 @@ export default function ChattingScreen() {
                         + "\n총상품수량: " + logistic[1]
                         + "\n지점미출하: " + logistic[2]
                         + "\n입고예정: " + logistic[3]
-                        +"\n시범진열: "+ logistic[4]
+                        + "\n시범진열: " + logistic[4]
                     list.push(str2);
                 })
                 setMessage(str, true, false, [], false);
@@ -157,12 +157,13 @@ export default function ChattingScreen() {
     }
 
     const searchSalesHistory = () => {
-        setBottomIsOpen(false);
+        var name = ""
+
         if (sales.length !== 0) {
             var list = []
             sales.map((item) => {
                 if (isDate) {
-                    if (startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
+                    if (startDate.getTime() <= item.dateOfSale.getTime() && endDate >= item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
                             + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
@@ -174,7 +175,7 @@ export default function ChattingScreen() {
                         list.push(str);
                     }
                 } else {
-                    if (item.customerName === salesCustomer && item.phone === salesPhone && startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
+                    if (item.phone === salesPhone && startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
                             + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
@@ -184,26 +185,35 @@ export default function ChattingScreen() {
                             + "\n배달 일자: " + getYYYMMDD(item.dateOfDelivery)
                             + "\n취소 일자: " + getYYYMMDD(item.dateOfCancellation);
                         list.push(str);
+                        name = item.customerName
                     }
                 }
             })
             if (list.length === 0) {
-                setMessage(manual["판매내역없음"], true, false, [], false);
+                if (isDate) {
+                    alert(manual["날짜조회없음"]);
+                } else {
+                    alert(manual["번호조회없음"]);
+                }
             } else {
                 if (isDate) {
                     setMessage("요청하신 일자의 판매내역입니다.", true, false, [], false);
                 } else {
-                    setMessage("요청하신 일자의 " + salesCustomer.slice(0, -1) + "*님 판매내역입니다.", true, false, [], false);
+                    setMessage("요청하신 일자의 " + name.slice(0, -1) + "*님 판매내역입니다.", true, false, [], false);
                 }
                 setMessage("", true, false, list, false);
+                setBottomIsOpen(false);
+                setMessage(manual["기능"], true, true, [], false);
+                setSalesCustomer("");
+                setSalesPhone("");
             }
         } else {
-            setMessage(manual['판매내역없음'], true, false, [], false);
+            if (isDate) {
+                alert(manual["날짜조회없음"]);
+            } else {
+                alert(manual["번호조회없음"]);
+            }
         }
-        setMessage(manual["기능"], true, true, [], false);
-
-        setSalesCustomer("");
-        setSalesPhone("");
     }
 
     const searchCustomerPromise = () => {
@@ -326,6 +336,9 @@ export default function ChattingScreen() {
 
     const setOnClickSheetCancel = () => {
         setBottomIsOpen(false);
+        setSalesCustomer("");
+        setSalesPhone("");
+        setMessage(manual["기능"], true, true, [], false);
     }
 
     return (
@@ -418,7 +431,12 @@ export default function ChattingScreen() {
 
             <Sheet snapPoints={[700, 400, 100, 0]} isOpen={bottomIsOpen} onClose={() => setBottomIsOpen(false)}>
                 <Sheet.Container>
-                    <p className="sheetTitle">판매내역조회</p>
+                    {
+                        isDate
+                            ? <p className="sheetTitle">날짜로 조회하기</p>
+                            : <p className="sheetTitle">번호로 조회하기</p>
+                    }
+
                     <div className="sheetContainer">
                         <div className="sheetBody">
                             {isDate
@@ -432,24 +450,14 @@ export default function ChattingScreen() {
                             {
                                 isDate
                                     ? null
-                                    : <>
-                                        <input
-                                            className="inputBox"
-                                            type="text"
-                                            name="salesCustomer"
-                                            placeholder="고객명을 입력해주세요"
-                                            onChange={(e) => setSalesCustomer(e.target.value)}
-                                            value={salesCustomer}
-                                        />
-                                        <input
-                                            className="inputBox"
-                                            type="text"
-                                            name="salesPhone"
-                                            placeholder="전화번호를 입력해주세요 ex) 010-1234-1234"
-                                            onChange={(e) => setSalesPhone(e.target.value)}
-                                            value={salesPhone}
-                                        />
-                                    </>
+                                    : <input
+                                        className="inputBox"
+                                        type="text"
+                                        name="salesPhone"
+                                        placeholder="전화번호를 입력해주세요 ex) 010-1234-1234"
+                                        onChange={(e) => setSalesPhone(e.target.value)}
+                                        value={salesPhone}
+                                    />
                             }
                         </div>
                         <div className="sheetBtnBox">
