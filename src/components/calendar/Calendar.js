@@ -23,7 +23,12 @@ function Calender() {
         setState([item.selection]);
         setStartDate(item.selection.startDate);
         setEndDate(item.selection.endDate);
-    }
+    };
+
+    useEffect(() => {
+        setStartDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3));
+        setEndDate(today);
+    }, []);
 
     return (
         <div>
