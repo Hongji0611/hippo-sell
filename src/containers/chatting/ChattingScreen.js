@@ -206,9 +206,9 @@ export default function ChattingScreen() {
                 }
             } else {
                 if (isDate) {
-                    setMessage("요청하신 일자의 판매내역입니다.", true, false, [], false, false);
+                    setMessage(manual["날짜조회결과"], true, false, [], false, false);
                 } else {
-                    setMessage("요청하신 일자의 " + name.slice(0, -1) + "*님 판매내역입니다.", true, false, [], false, false);
+                    setMessage(manual["번호조회결과"], true, false, [], false, false);
                 }
                 setMessage("", true, false, list, false, false);
                 setBottomIsOpen(false);
@@ -457,7 +457,7 @@ export default function ChattingScreen() {
                         <div className="sheetBody">
                             {isDate
                                 ? <p className="sheetContent">{manual['날짜조회']}</p>
-                                : <p className="sheetContent">{manual['고객명조회']}</p>
+                                : <p className="sheetContent">{manual['번호조회']}</p>
                             }
                             <p className="sheetNotion">{manual["조회기간"]}</p>
                         </div>
