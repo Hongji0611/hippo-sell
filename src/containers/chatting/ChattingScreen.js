@@ -157,14 +157,22 @@ export default function ChattingScreen() {
         setMessage(manual['판매내역조회방법'], true, false, [], true, false);
     }
 
+    function addDays(date, days) {
+        const clone = new Date(date);
+        clone.setDate(date.getDate() + days)
+        return clone;
+    }
+
     const searchSalesHistory = () => {
         var name = ""
-
+        console.log(addDays(startDate, -1))
+        console.log(addDays(endDate, 1))
         if (sales.length !== 0) {
             var list = []
             sales.map((item) => {
                 if (isDate) {
-                    if (startDate.getTime() <= item.dateOfSale.getTime() && endDate >= item.dateOfSale) {
+                    console.log(item.customerName + item.dateOfSale)
+                    if (addDays(startDate, -1) < item.dateOfSale && addDays(endDate, 1) > item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
                             + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
@@ -176,7 +184,7 @@ export default function ChattingScreen() {
                         list.push(str);
                     }
                 } else {
-                    if (item.phone === salesPhone && startDate.getTime() <= item.dateOfSale.getTime() && endDate.getTime() >= item.dateOfSale.getTime()) {
+                    if (item.phone === salesPhone && addDays(startDate, -1) < item.dateOfSale && addDays(endDate, 1) > item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
                             + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
