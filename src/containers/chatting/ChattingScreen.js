@@ -71,15 +71,6 @@ export default function ChattingScreen() {
         setChatList(chatInit);
     }, [])
 
-    useEffect(() => { //휴대폰 번호 자동 하이픈 추가
-        if (salesPhone.length === 10) {
-            setSalesPhone(salesPhone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
-        }
-        if (salesPhone.length === 13) {
-            setSalesPhone(salesPhone.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
-        }
-    }, [salesPhone]);
-
     const onKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleAddChat();
@@ -173,6 +164,10 @@ export default function ChattingScreen() {
         return clone;
     }
 
+    function addPhonehyphen(phone){
+        return phone.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+    }
+
     const searchSalesHistory = () => {
         var name = ""
         console.log(addDays(startDate, -1))
@@ -184,7 +179,7 @@ export default function ChattingScreen() {
                     console.log(item.customerName + item.dateOfSale)
                     if (addDays(startDate, -1) < item.dateOfSale && addDays(endDate, 1) > item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                            + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                            + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
                             + "\n수량: " + item.count
                             + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -196,7 +191,7 @@ export default function ChattingScreen() {
                 } else {
                     if (item.phone === salesPhone && addDays(startDate, -1) < item.dateOfSale && addDays(endDate, 1) > item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                            + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                            + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
                             + "\n수량: " + item.count
                             + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -240,7 +235,7 @@ export default function ChattingScreen() {
             var list = [];
             promise.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                    + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                     + "\n약속예정일자: " + item.date
                     + "\n상담 유형: " + item.type
                     + "\n약속 내용: " + item.contents;
@@ -259,7 +254,7 @@ export default function ChattingScreen() {
             var list = [];
             todayDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                    + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                     + "\n상품명: " + item.productName
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
@@ -279,7 +274,7 @@ export default function ChattingScreen() {
             var list = [];
             tomorrowDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                    + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                     + "\n상품명: " + item.productName
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
@@ -481,7 +476,7 @@ export default function ChattingScreen() {
                                         className="inputBox"
                                         type="text"
                                         name="salesPhone"
-                                        placeholder="전화번호를 입력해주세요 ex) 010-1234-1234"
+                                        placeholder="전화번호를 입력해주세요 ex) 01012341234"
                                         onChange={(e) => setSalesPhone(e.target.value)}
                                         value={salesPhone}
                                     />
