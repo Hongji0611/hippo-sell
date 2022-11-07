@@ -250,7 +250,7 @@ export default function ChattingScreen() {
 
     const searchTodayDeliveryHistory = () => {
         if (todayDelivery.length !== 0) {
-            setMessage(manual['당일배송내역조회'], true, false, [], false, false);
+            setMessage("[ "+getYYYMMDD(new Date())+" ] 기준\n\n"+manual['당일배송내역조회'], true, false, [], false, false);
             var list = [];
             todayDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
@@ -270,7 +270,7 @@ export default function ChattingScreen() {
 
     const searchTomorrowDeliveryHistory = () => {
         if (tomorrowDelivery.length !== 0) {
-            setMessage(manual['익일배송내역조회'], true, false, [], false, false);
+            setMessage("[ "+getYYYMMDD(new Date())+" ] 기준\n\n"+manual['익일배송내역조회'], true, false, [], false, false);
             var list = [];
             tomorrowDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
