@@ -9,3 +9,8 @@
     text-align: left;
     margin: 5px;
 }
+
+.rdrDayNumber{
+    font-size: 16px;
+    line-height: 16px;
+}
