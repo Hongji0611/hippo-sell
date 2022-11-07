@@ -127,6 +127,7 @@ export default function ChattingScreen() {
 
     const searchProduct = (chatText) => {
         const isFound = false;
+        chatText = chatText.toUpperCase();
         product.map((item) => {
             if (item.code === chatText) {
                 const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n재고: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
@@ -163,6 +164,10 @@ export default function ChattingScreen() {
         return clone;
     }
 
+    function addPhonehyphen(phone){
+        return phone.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+    }
+
     const searchSalesHistory = () => {
         var name = ""
         console.log(addDays(startDate, -1))
@@ -174,7 +179,7 @@ export default function ChattingScreen() {
                     console.log(item.customerName + item.dateOfSale)
                     if (addDays(startDate, -1) < item.dateOfSale && addDays(endDate, 1) > item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                            + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                            + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
                             + "\n수량: " + item.count
                             + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -186,7 +191,7 @@ export default function ChattingScreen() {
                 } else {
                     if (item.phone === salesPhone && addDays(startDate, -1) < item.dateOfSale && addDays(endDate, 1) > item.dateOfSale) {
                         const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                            + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                            + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                             + "\n상품코드: " + item.code
                             + "\n수량: " + item.count
                             + "\n접수 금액: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -230,7 +235,7 @@ export default function ChattingScreen() {
             var list = [];
             promise.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                    + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                     + "\n약속예정일자: " + item.date
                     + "\n상담 유형: " + item.type
                     + "\n약속 내용: " + item.contents;
@@ -245,11 +250,11 @@ export default function ChattingScreen() {
 
     const searchTodayDeliveryHistory = () => {
         if (todayDelivery.length !== 0) {
-            setMessage(manual['당일배송내역조회'], true, false, [], false, false);
+            setMessage("[ "+getYYYMMDD(new Date())+" ] 기준\n\n"+manual['당일배송내역조회'], true, false, [], false, false);
             var list = [];
             todayDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                    + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                     + "\n상품명: " + item.productName
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
@@ -265,11 +270,11 @@ export default function ChattingScreen() {
 
     const searchTomorrowDeliveryHistory = () => {
         if (tomorrowDelivery.length !== 0) {
-            setMessage(manual['익일배송내역조회'], true, false, [], false, false);
+            setMessage("[ "+getYYYMMDD(new Date())+" ] 기준\n\n"+manual['익일배송내역조회'], true, false, [], false, false);
             var list = [];
             tomorrowDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
-                    + "\n휴대폰번호: " + item.phone.slice(0, -4) + "****"
+                    + "\n휴대폰번호: " + addPhonehyphen(item.phone).slice(0, -4) + "****"
                     + "\n상품명: " + item.productName
                     + "\n상품 코드: " + item.code
                     + "\n배송 유형: " + item.type
@@ -307,6 +312,7 @@ export default function ChattingScreen() {
     const updateChange = (e) => {
         let data = e.target.value;
         setChatText(data);
+        data = data.toUpperCase();
         let filterData = [];
         if (!checkKorean(chatText) && data.length > 4) {
             filterData = product.filter((i) =>
@@ -470,7 +476,7 @@ export default function ChattingScreen() {
                                         className="inputBox"
                                         type="text"
                                         name="salesPhone"
-                                        placeholder="전화번호를 입력해주세요 ex) 010-1234-1234"
+                                        placeholder="전화번호를 입력해주세요 ex) 01012341234"
                                         onChange={(e) => setSalesPhone(e.target.value)}
                                         value={salesPhone}
                                     />
