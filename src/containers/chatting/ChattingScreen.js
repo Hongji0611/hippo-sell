@@ -127,6 +127,7 @@ export default function ChattingScreen() {
 
     const searchProduct = (chatText) => {
         const isFound = false;
+        chatText = chatText.toUpperCase();
         product.map((item) => {
             if (item.code === chatText) {
                 const str = "가격: " + item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원\n재고: " + item.realUse + " / " + item.logistics + " (지점실가용/관할물류)";
@@ -307,6 +308,7 @@ export default function ChattingScreen() {
     const updateChange = (e) => {
         let data = e.target.value;
         setChatText(data);
+        data = data.toUpperCase();
         let filterData = [];
         if (!checkKorean(chatText) && data.length > 4) {
             filterData = product.filter((i) =>
