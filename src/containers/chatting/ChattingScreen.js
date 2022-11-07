@@ -71,6 +71,15 @@ export default function ChattingScreen() {
         setChatList(chatInit);
     }, [])
 
+    useEffect(() => { //휴대폰 번호 자동 하이픈 추가
+        if (salesPhone.length === 10) {
+            setSalesPhone(salesPhone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'));
+        }
+        if (salesPhone.length === 13) {
+            setSalesPhone(salesPhone.replace(/-/g, '').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'));
+        }
+    }, [salesPhone]);
+
     const onKeyPress = (e) => {
         if (e.key === 'Enter') {
             handleAddChat();
