@@ -64,7 +64,7 @@ export default function LoginScreen() {
                 />
             </div>
 
-            <div>
+            
                 <input
                     className="inputBox"
                     type="password"
@@ -73,7 +73,7 @@ export default function LoginScreen() {
                     onChange={(e) => setPw(e.target.value)}
                     value={pw}
                 />
-            </div>
+    
 
             <div>
                 <input
