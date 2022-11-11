@@ -164,7 +164,7 @@ export default function ChattingScreen() {
         return clone;
     }
 
-    function addPhonehyphen(phone){
+    function addPhonehyphen(phone) {
         return phone.replace(/[^0-9]/g, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
     }
 
@@ -250,7 +250,7 @@ export default function ChattingScreen() {
 
     const searchTodayDeliveryHistory = () => {
         if (todayDelivery.length !== 0) {
-            setMessage("[ "+getYYYMMDD(new Date())+" ] 기준\n\n"+manual['당일배송내역조회'], true, false, [], false, false);
+            setMessage("[ " + getYYYMMDD(new Date()) + " ] 기준\n\n" + manual['당일배송내역조회'], true, false, [], false, false);
             var list = [];
             todayDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
@@ -270,7 +270,7 @@ export default function ChattingScreen() {
 
     const searchTomorrowDeliveryHistory = () => {
         if (tomorrowDelivery.length !== 0) {
-            setMessage("[ "+getYYYMMDD(new Date())+" ] 기준\n\n"+manual['익일배송내역조회'], true, false, [], false, false);
+            setMessage("[ " + getYYYMMDD(new Date()) + " ] 기준\n\n" + manual['익일배송내역조회'], true, false, [], false, false);
             var list = [];
             tomorrowDelivery.map((item) => {
                 const str = "고객명: " + item.customerName.slice(0, -1) + "*"
@@ -451,7 +451,7 @@ export default function ChattingScreen() {
                 />
             </div>
 
-            <Sheet snapPoints={[700, 400, 100, 0]} isOpen={bottomIsOpen} onClose={() => setBottomIsOpen(false)}>
+            <Sheet snapPoints={[740, 400, 100, 0]} isOpen={bottomIsOpen} onClose={() => setBottomIsOpen(false)}>
                 <Sheet.Container>
                     {
                         isDate
@@ -473,7 +473,7 @@ export default function ChattingScreen() {
                                 isDate
                                     ? null
                                     : <input
-                                        className="inputBox"
+                                        className="setPhone"
                                         type="text"
                                         name="salesPhone"
                                         placeholder="전화번호를 입력해주세요 ex) 01012341234"
