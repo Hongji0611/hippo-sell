@@ -35,8 +35,8 @@ const sales = [
         code: "MWVU2FE/A",
         count: 1,
         price: 5000,
-        dateOfSale: new Date("2022-10-11T00:00:00"),
-        dateOfDelivery: new Date("2022-10-11T00:00:00"),
+        dateOfSale: new Date("2022-11-11T00:00:00"),
+        dateOfDelivery: new Date("2022-11-11T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -45,8 +45,8 @@ const sales = [
         code: "CRT-SPS0640BW",
         count: 1,
         price: 659000,
-        dateOfSale: new Date("2022-10-11T00:00:00"),
-        dateOfDelivery: new Date("2022-10-12T00:00:00"),
+        dateOfSale: new Date("2022-11-12T00:00:00"),
+        dateOfDelivery: new Date("2022-11-13T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -54,8 +54,8 @@ const sales = [
         phone: "01012341111",
         count: 1,
         price: 899000,
-        dateOfSale: new Date("2022-10-11T00:00:00"),
-        dateOfDelivery: new Date("2022-10-13T00:00:00"),
+        dateOfSale: new Date("2022-11-08T00:00:00"),
+        dateOfDelivery: new Date("2022-11-13T00:00:00"),
         dateOfCancellation: new Date("2022-10-12T00:00:00")
     },
     {
@@ -64,8 +64,8 @@ const sales = [
         code: "HW-Q600B/KR",
         count: 1,
         price: 519000,
-        dateOfSale: new Date("2022-10-11T00:00:00"),
-        dateOfDelivery: new Date("2022-10-12T00:00:00"),
+        dateOfSale: new Date("2022-11-09T00:00:00"),
+        dateOfDelivery: new Date("2022-11-12T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -74,8 +74,8 @@ const sales = [
         code: "UN-A1010",
         count: 1,
         price: 48000,
-        dateOfSale: new Date("2022-10-12T00:00:00"),
-        dateOfDelivery: new Date("2022-10-12T00:00:00"),
+        dateOfSale: new Date("2022-11-13T00:00:00"),
+        dateOfDelivery: new Date("2022-11-14T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -84,8 +84,8 @@ const sales = [
         code: "MEW-2016C",
         count: 1,
         price: 95000,
-        dateOfSale: new Date("2022-10-12T00:00:00"),
-        dateOfDelivery: new Date("2022-10-13T00:00:00"),
+        dateOfSale: new Date("2022-11-14T00:00:00"),
+        dateOfDelivery: new Date("2022-11-14T00:00:00"),
         dateOfCancellation: new Date("2022-10-12T00:00:00")
     },
     {
@@ -94,8 +94,8 @@ const sales = [
         code: "OLED65A2HNA.AKRG",
         count: 1,
         price: 2401000,
-        dateOfSale: new Date("2022-10-12T00:00:00"),
-        dateOfDelivery: new Date("2022-10-28T00:00:00"),
+        dateOfSale: new Date("2022-11-12T00:00:00"),
+        dateOfDelivery: new Date("2022-11-28T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -104,8 +104,8 @@ const sales = [
         code: "OLW480C.AKR",
         count: 1,
         price: 100000,
-        dateOfSale: new Date("2022-10-12T00:00:00"),
-        dateOfDelivery: new Date("2022-10-28T00:00:00"),
+        dateOfSale: new Date("2022-11-15T00:00:00"),
+        dateOfDelivery: new Date("2022-11-28T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -114,8 +114,8 @@ const sales = [
         code: "M873GBB272.AKOR",
         count: 1,
         price: 3626000,
-        dateOfSale: new Date("2022-10-12T00:00:00"),
-        dateOfDelivery: new Date("2022-10-28T00:00:00"),
+        dateOfSale: new Date("2022-11-16T00:00:00"),
+        dateOfDelivery: new Date("2022-11-28T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -124,8 +124,8 @@ const sales = [
         code: "BEI3MQT.AKOR",
         count: 1,
         price: 1656200,
-        dateOfSale: new Date("2022-10-12T00:00:00"),
-        dateOfDelivery: new Date("2022-10-28T00:00:00"),
+        dateOfSale: new Date("2022-11-20T00:00:00"),
+        dateOfDelivery: new Date("2022-11-28T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -134,8 +134,8 @@ const sales = [
         code: "CRP-HUF1080HM",
         count: 1,
         price: 249000,
-        dateOfSale: new Date("2022-10-13T00:00:00"),
-        dateOfDelivery: new Date("2022-10-19T00:00:00"),
+        dateOfSale: new Date("2022-11-13T00:00:00"),
+        dateOfDelivery: new Date("2022-11-19T00:00:00"),
         dateOfCancellation: new Date("2022-10-14T00:00:00")
     },
     {
@@ -144,8 +144,8 @@ const sales = [
         code: "WARRANTY50",
         count: 1,
         price: 7100,
-        dateOfSale: new Date("2022-10-13T00:00:00"),
-        dateOfDelivery: new Date("2022-10-19T00:00:00"),
+        dateOfSale: new Date("2022-11-23T00:00:00"),
+        dateOfDelivery: new Date("2022-11-23T00:00:00"),
         dateOfCancellation: new Date("2022-10-14T00:00:00")
     },
     {
@@ -154,8 +154,8 @@ const sales = [
         code: "MNJV3KH/A",
         count: 1,
         price: 359000,
-        dateOfSale: new Date("2022-10-13T00:00:00"),
-        dateOfDelivery: new Date("2022-10-13T00:00:00"),
+        dateOfSale: new Date("2022-11-03T00:00:00"),
+        dateOfDelivery: new Date("2022-11-03T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -164,8 +164,8 @@ const sales = [
         code: "IPHONE14P-128U",
         count: 1,
         price: 1502050,
-        dateOfSale: new Date("2022-10-13T00:00:00"),
-        dateOfDelivery: new Date("2022-10-13T00:00:00"),
+        dateOfSale: new Date("2022-11-14T00:00:00"),
+        dateOfDelivery: new Date("2022-11-14T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -174,8 +174,8 @@ const sales = [
         code: "SK-MSDACTION(32GB)(N)",
         count: 1,
         price: 14700,
-        dateOfSale: new Date("2022-10-14T00:00:00"),
-        dateOfDelivery: new Date("2022-10-14T00:00:00"),
+        dateOfSale: new Date("2022-11-18T00:00:00"),
+        dateOfDelivery: new Date("2022-11-18T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -184,8 +184,8 @@ const sales = [
         code: "MWYK2FE/A",
         count: 1,
         price: 5000,
-        dateOfSale: new Date("2022-10-14T00:00:00"),
-        dateOfDelivery: new Date("2022-10-14T00:00:00"),
+        dateOfSale: new Date("2022-11-14T00:00:00"),
+        dateOfDelivery: new Date("2022-11-14T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -194,9 +194,9 @@ const sales = [
         code: "IPHONE14P-128U",
         count: 1,
         price: 1402050,
-        dateOfSale: new Date("2022-10-14T00:00:00"),
-        dateOfDelivery: new Date("2022-10-14T00:00:00"),
-        dateOfCancellation: new Date("2022-10-15T00:00:00")
+        dateOfSale: new Date("2022-11-05T00:00:00"),
+        dateOfDelivery: new Date("2022-11-05T00:00:00"),
+        dateOfCancellation: new Date("2022-11-05T00:00:00")
     },
     {
         customerName: "김여울",
@@ -204,9 +204,9 @@ const sales = [
         code: "ACCGIFT-006",
         count: 1,
         price: 37950,
-        dateOfSale: new Date("2022-10-14T00:00:00"),
-        dateOfDelivery: new Date("2022-10-14T00:00:00"),
-        dateOfCancellation: new Date("2022-10-15T00:00:00")
+        dateOfSale: new Date("2022-11-14T00:00:00"),
+        dateOfDelivery: new Date("2022-11-14T00:00:00"),
+        dateOfCancellation: new Date("2022-11-15T00:00:00")
     },
     {
         customerName: "부천중동불명",
@@ -214,8 +214,8 @@ const sales = [
         code: "MX0E2FE/A",
         count: 1,
         price: 5000,
-        dateOfSale: new Date("2022-10-14T00:00:00"),
-        dateOfDelivery: new Date("2022-10-14T00:00:00"),
+        dateOfSale: new Date("2022-11-09T00:00:00"),
+        dateOfDelivery: new Date("2022-11-09T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
     {
@@ -224,8 +224,48 @@ const sales = [
         code: "MX0E2FE/A",
         count: 1,
         price: 599000,
-        dateOfSale: new Date("2022-10-14T00:00:00"),
-        dateOfDelivery: new Date("2022-10-15T00:00:00"),
+        dateOfSale: new Date("2022-11-14T00:00:00"),
+        dateOfDelivery: new Date("2022-11-15T00:00:00"),
+        dateOfCancellation: new Date("9999-12-31T00:00:00")
+    },
+    {
+        customerName: "박하나",
+        phone: "01012341212",
+        code: "MX0E2FE/A",
+        count: 1,
+        price: 599000,
+        dateOfSale: new Date("2022-11-11T00:00:00"),
+        dateOfDelivery: new Date("2022-11-15T00:00:00"),
+        dateOfCancellation: new Date("9999-12-31T00:00:00")
+    },
+    {
+        customerName: "이하나",
+        phone: "01012341211",
+        code: "MX0E2FE/A",
+        count: 1,
+        price: 599000,
+        dateOfSale: new Date("2022-11-12T00:00:00"),
+        dateOfDelivery: new Date("2022-11-15T00:00:00"),
+        dateOfCancellation: new Date("9999-12-31T00:00:00")
+    },
+    {
+        customerName: "홍하나",
+        phone: "01012351211",
+        code: "MX0E2FE/AE",
+        count: 1,
+        price: 399000,
+        dateOfSale: new Date("2022-11-13T00:00:00"),
+        dateOfDelivery: new Date("2022-11-15T00:00:00"),
+        dateOfCancellation: new Date("9999-12-31T00:00:00")
+    },
+    {
+        customerName: "김여름",
+        phone: "01012345555",
+        code: "MX0E2FE/AE",
+        count: 1,
+        price: 399000,
+        dateOfSale: new Date("2022-11-13T00:00:00"),
+        dateOfDelivery: new Date("2022-11-15T00:00:00"),
         dateOfCancellation: new Date("9999-12-31T00:00:00")
     },
 ];
